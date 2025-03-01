@@ -75,6 +75,9 @@ public class Program
 
                 await command.RespondAsync(formattedTime); // Only returns the time
                 return;
+            case "make-sandwich":
+                await command.RespondAsync("Here is your sandwich." + ApplicationCommandType.User);
+                return;
         }
     }
 
@@ -91,9 +94,13 @@ public class Program
             .WithName("current-time")
             .WithDescription("Checks for current time in your time zone")
             .AddOption("timezones", ApplicationCommandOptionType.String, "What time zone", isRequired: true);
+        var guildCommand2 = new SlashCommandBuilder()
+            .WithName("make-sandwich")
+            .WithDescription("Make sandwich for a gluttonous fella");
         try
         {
             await guild.CreateApplicationCommandAsync(guildCommand1.Build());
+            await guild.CreateApplicationCommandAsync(guildCommand2.Build());
             Console.WriteLine($"Registered commands for {guild.Name} (ID: {guild.Id})");
         }
         catch (ApplicationCommandException ex)
