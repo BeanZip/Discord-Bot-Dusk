@@ -9,12 +9,14 @@ namespace Discord_Bot_Dusk;
 public class Program
 {
     private static DiscordSocketClient _client;
+    public static readonly string[] _timeZones = { "EST", "PST" };
     
     public static async Task Main()
     {
       _client = new DiscordSocketClient();
       _client.Log += Log;
       _client.Ready += Client_Ready;
+      _client.GuildAvailable += OnGuildAvailable;
       _client.SlashCommandExecuted += SlashCommandHandler;
       var token = Environment.GetEnvironmentVariable("BotToken");
       await _client.LoginAsync(TokenType.Bot, token);
@@ -28,35 +30,76 @@ public class Program
         return Task.CompletedTask;
     }
 
-
+    // Create Commands Here
     public static async Task Client_Ready()
     {
-        ulong guildId = 928791142475104277;
-        var guild = _client.GetGuild(guildId);
-        
-        var guildCommand1 = new Discord.SlashCommandBuilder()
-            .WithName("Current-Time")
-            .WithDescription("Checks For Current Time in Your Time Zone");
-
-        try
+        foreach (var guild in _client.Guilds)
         {
-            await guild.CreateApplicationCommandAsync(guildCommand1.Build());
-            await _client.SetGameAsync($"Checking the Clock :3");
-        }
-        catch (ApplicationCommandException ex)
-        {
-            var json = JsonConvert.SerializeObject(ex.Errors, Formatting.Indented);
-            Console.WriteLine(json);
+            await RegisterCommandsForGuild(guild);
         }
     }
-
+    
+    
+    /// Add Command Functionality Here
+    ///
+    /// <param name="command">This Command is Being Checked</param>
     private static async Task SlashCommandHandler(SocketSlashCommand command)
     {
         switch (command.Data.Name)
         {
             case "current-time":
-                await command.RespondAsync($"Current time is {DateTime.Now}");
-                break;
+                var option = command.Data.Options.FirstOrDefault(o => o.Name == "timezones");
+
+                if (option == null || option.Value == null)
+                {
+                    await command.RespondAsync("Please provide a valid time zone.");
+                    return;
+                }
+
+                string userTimeZone = option.Value.ToString().ToUpper(); // Normalize case
+
+                if (!_timeZones.Contains(userTimeZone))
+                {
+                    await command.RespondAsync("Invalid Time Zone. Please use: est or pst.");
+                    return;
+                }
+
+                // Get current UTC time and convert to the selected time zone
+                DateTime currentTime = DateTime.UtcNow;
+                string formattedTime = userTimeZone switch
+                {
+                    "EST" => currentTime.AddHours(-5).ToString("hh:mm tt"), // Returns only time
+                    "PST" => currentTime.AddHours(-8).ToString("hh:mm tt"),
+                    _ => "Unknown Time Zone"
+                };
+
+                await command.RespondAsync(formattedTime); // Only returns the time
+                return;
+        }
+    }
+
+    private static async Task OnGuildAvailable(SocketGuild guild)
+    {
+        Console.WriteLine($"Bot joined a new guild: {guild.Name} (ID: {guild.Id})");
+        
+        await RegisterCommandsForGuild(guild);
+    }
+
+    private static async Task RegisterCommandsForGuild(SocketGuild guild)
+    {
+        var guildCommand1 = new SlashCommandBuilder()
+            .WithName("current-time")
+            .WithDescription("Checks for current time in your time zone")
+            .AddOption("timezones", ApplicationCommandOptionType.String, "What time zone", isRequired: true);
+        try
+        {
+            await guild.CreateApplicationCommandAsync(guildCommand1.Build());
+            Console.WriteLine($"Registered commands for {guild.Name} (ID: {guild.Id})");
+        }
+        catch (ApplicationCommandException ex)
+        {
+            var json = JsonConvert.SerializeObject(ex.Errors, Formatting.Indented);
+            Console.WriteLine(json);
         }
     }
 }
