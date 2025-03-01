@@ -76,7 +76,7 @@ public class Program
                 await command.RespondAsync(formattedTime); // Only returns the time
                 return;
             case "make-sandwich":
-                await command.RespondAsync("Here is your sandwich." + ApplicationCommandType.User);
+                await command.RespondAsync("Here is your sandwich.");
                 return;
         }
     }
