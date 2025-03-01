@@ -33,6 +33,7 @@ public class Program
     // Create Commands Here
     public static async Task Client_Ready()
     {
+        await _client.SetCustomStatusAsync("Checking the Time :3...");
         foreach (var guild in _client.Guilds)
         {
             await RegisterCommandsForGuild(guild);
