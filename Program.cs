@@ -110,6 +110,7 @@ public class Program
         {
             await guild.CreateApplicationCommandAsync(guildCommand1.Build());
             await guild.CreateApplicationCommandAsync(guildCommand2.Build());
+            await guild.CreateApplicationCommandAsync(guildCommand3.Build());
             Console.WriteLine($"Registered commands for {guild.Name} (ID: {guild.Id})");
         }
         catch (ApplicationCommandException ex)
