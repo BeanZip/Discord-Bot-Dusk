@@ -82,7 +82,8 @@ public class Program
                 await command.RespondAsync("Here is your sandwich.");
                 return;
             case "current-day":
-                await command.RespondAsync($"{DateTime.Today} is the current day.");
+                DateTime currentDay = DateTime.Today;
+                await command.RespondAsync($"{currentDay.DayOfWeek} is the current day. on {currentDay:MMMM yyyy}");
                 return;
         }
     }
