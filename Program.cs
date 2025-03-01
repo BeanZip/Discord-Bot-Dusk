@@ -9,7 +9,7 @@ namespace Discord_Bot_Dusk;
 public class Program
 {
     private static DiscordSocketClient _client;
-    public static readonly string[] _timeZones = { "EST", "PST" };
+    public static readonly string[] _timeZones = { "EST", "PST","CT","MT"};
     
     public static async Task Main()
     {
@@ -61,7 +61,7 @@ public class Program
 
                 if (!_timeZones.Contains(userTimeZone))
                 {
-                    await command.RespondAsync("Invalid Time Zone. Please use: est or pst.");
+                    await command.RespondAsync("Invalid Time Zone. Please use: US Time Zone");
                     return;
                 }
 
@@ -71,6 +71,8 @@ public class Program
                 {
                     "EST" => currentTime.AddHours(-5).ToString("hh:mm tt"), // Returns only time
                     "PST" => currentTime.AddHours(-8).ToString("hh:mm tt"),
+                    "CT" => currentTime.AddHours(-3).ToString("hh:mm tt"),
+                    "MT" => currentTime.AddHours(-2).ToString("hh:mm tt"),
                     _ => "Unknown Time Zone"
                 };
 
