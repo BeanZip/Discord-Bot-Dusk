@@ -81,6 +81,9 @@ public class Program
             case "make-sandwich":
                 await command.RespondAsync("Here is your sandwich.");
                 return;
+            case "current-day":
+                await command.RespondAsync($"{DateTime.Today} is the current day.");
+                return;
         }
     }
 
@@ -100,6 +103,9 @@ public class Program
         var guildCommand2 = new SlashCommandBuilder()
             .WithName("make-sandwich")
             .WithDescription("Make sandwich for a gluttonous fella");
+        var guildCommand3 = new SlashCommandBuilder()
+            .WithName("current-day")
+            .WithDescription("Checks for current day in your time zone");
         try
         {
             await guild.CreateApplicationCommandAsync(guildCommand1.Build());
