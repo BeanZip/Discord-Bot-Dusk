@@ -79,11 +79,15 @@ public class Program
                 await command.RespondAsync(formattedTime); // Only returns the time
                 return;
             case "make-sandwich":
-                await command.RespondAsync("Here is your sandwich.");
+                string[] response = { "Tuna", "Chicken", "Turkey", "Beef" };
+                Random random = new Random();
+                int randomIndex = random.Next(response.Length);
+                string responseMessage = response[randomIndex];
+                await command.RespondAsync($"Here is your {responseMessage} sandwich.");
                 return;
             case "current-day":
                 DateTime currentDay = DateTime.Today;
-                await command.RespondAsync($"{currentDay.DayOfWeek} is the current day. on {currentDay:MMMM yyyy}");
+                await command.RespondAsync($"{currentDay.DayOfWeek} is the current day on {currentDay:MMMM yyyy}.");
                 return;
         }
     }
@@ -100,7 +104,7 @@ public class Program
         var guildCommand1 = new SlashCommandBuilder()
             .WithName("current-time")
             .WithDescription("Checks for current time in your time zone")
-            .AddOption("timezones", ApplicationCommandOptionType.String, "What time zone", isRequired: true);
+            .AddOption("timezones", ApplicationCommandOptionType.String, "What time zone", true);
         var guildCommand2 = new SlashCommandBuilder()
             .WithName("make-sandwich")
             .WithDescription("Make sandwich for a gluttonous fella");
