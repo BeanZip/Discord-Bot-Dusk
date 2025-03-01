@@ -89,11 +89,6 @@ public class Program
                 DateTime currentDay = DateTime.Today;
                 await command.RespondAsync($"{currentDay.DayOfWeek} is the current day on {currentDay:MMMM yyyy}.");
                 return;
-            case "inspiring-quote":
-                OpenAIClient aiClient = new OpenAIClient();
-                string openAiResponse =await aiClient.GetResponseAsync("Give a inspiring quote");
-                await command.RespondAsync(openAiResponse);
-                return;
         }
     }
 
@@ -116,15 +111,11 @@ public class Program
         var guildCommand3 = new SlashCommandBuilder()
             .WithName("current-day")
             .WithDescription("Checks for current day in your time zone");
-        var guildCommand4 = new SlashCommandBuilder()
-            .WithName("inspiring-quote")
-            .WithDescription("Gives you a quote to wake up better rejuvenating tomorrow");
         try
         {
             await guild.CreateApplicationCommandAsync(guildCommand1.Build());
             await guild.CreateApplicationCommandAsync(guildCommand2.Build());
             await guild.CreateApplicationCommandAsync(guildCommand3.Build());
-            await guild.CreateApplicationCommandAsync(guildCommand4.Build());
             Console.WriteLine($"Registered commands for {guild.Name} (ID: {guild.Id})");
         }
         catch (ApplicationCommandException ex)
