@@ -145,28 +145,31 @@ public class Program
     {
         try
         {
-            var currentTimeCommand = new SlashCommandBuilder()
-                .WithName("current-time")
-                .WithDescription("Get the current time in a specific timezone")
-                .AddOption("timezones", ApplicationCommandOptionType.String, "The timezone to check", isRequired: true);
+            var commands = new SlashCommandBuilder[]
+            {
+                new SlashCommandBuilder()
+                    .WithName("current-time")
+                    .WithDescription("Get the current time in a specific timezone")
+                    .AddOption("timezones", ApplicationCommandOptionType.String, "The timezone to check", isRequired: true),
 
-            var makeSandwichCommand = new SlashCommandBuilder()
-                .WithName("make-sandwich")
-                .WithDescription("Get a random sandwich suggestion");
+                new SlashCommandBuilder()
+                    .WithName("make-sandwich")
+                    .WithDescription("Get a random sandwich suggestion"),
 
-            var currentDayCommand = new SlashCommandBuilder()
-                .WithName("current-day")
-                .WithDescription("Get the current day")
-                .AddOption("timezones", ApplicationCommandOptionType.String, "The timezone to check", isRequired: false);
+                new SlashCommandBuilder()
+                    .WithName("current-day")
+                    .WithDescription("Get the current day")
+                    .AddOption("timezones", ApplicationCommandOptionType.String, "The timezone to check", isRequired: false),
 
-            var helloSonCommand = new SlashCommandBuilder()
-                .WithName("hello-son")
-                .WithDescription("Special greeting for father");
+                new SlashCommandBuilder()
+                    .WithName("hello-son")
+                    .WithDescription("Special greeting for father")
+            };
 
-            await guild.CreateApplicationCommandAsync(currentTimeCommand.Build());
-            await guild.CreateApplicationCommandAsync(makeSandwichCommand.Build());
-            await guild.CreateApplicationCommandAsync(currentDayCommand.Build());
-            await guild.CreateApplicationCommandAsync(helloSonCommand.Build());
+            foreach (var cmd in commands)
+            {
+                await guild.CreateApplicationCommandAsync(cmd.Build());
+            }
         }
         catch (HttpException exception)
         {
