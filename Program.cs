@@ -79,7 +79,7 @@ public class Program
                     _ => "Unknown Time Zone"
                 };
 
-                await command.RespondAsync($"It is {formattedTime} in {command.User.Mention} TimeZone (sent as {userTimeZone} btw)"); // Only returns the time
+                await command.RespondAsync($"Currently it is {formattedTime} in {userTimeZone} {command.User.Mention}"); // Only returns the time
                 return;
             case "make-sandwich":
                 string[] response = { "Tuna", "Chicken", "Turkey", "Beef", "Ham", "Pastrami", "BLT", "Club", "Grilled Cheese", "PB&J", "Egg Salad", "Roast Beef", "Italian", "Veggie", "Reuben", "French Dip", "Meatball", "Pulled Pork", "Cuban", "Caprese" };
