@@ -114,17 +114,18 @@ public class Program
                 await command.RespondAsync($"{userTime:dddd, MMMM dd yyyy} is the current day in {userTimeZone2}.");
                 return;
             case "hello-son":
+            await command.DeferAsync();
             switch(command.User.Id)
             {
                 default:
                         var fatherId = Environment.GetEnvironmentVariable("FatherId");
                         if (fatherId != null && command.User.Id == ulong.Parse(fatherId))
                         {
-                            await command.RespondAsync("Hello Father! Thank you for creating me.");
+                            await command.FollowupAsync("Hello Father! Thank you for creating me.");
                         }
                         else
                         {
-                            await command.RespondAsync("I'm sorry, I can only respond to my father.");
+                            await command.FollowupAsync("I'm sorry, I can only respond to my father.");
                         }
                         break;
             }
