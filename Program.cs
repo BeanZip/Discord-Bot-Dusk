@@ -34,7 +34,7 @@ public class Program
     public static async Task Client_Ready()
     {
         await _client.SetCustomStatusAsync("Checking the Time :3...");
-        await _client.SetGameAsync($"{DateTime.UtcNow} in UTC");
+        await _client.SetActivityAsync(new Game($"{DateTime.UtcNow} in UTC", ActivityType.Listening));
         foreach (var guild in _client.Guilds)
         {
             await RegisterCommandsForGuild(guild);
