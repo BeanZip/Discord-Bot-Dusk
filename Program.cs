@@ -138,10 +138,12 @@ public class Program
                     await command.RespondAsync($"{command.User.Mention} has blew himself up");
                 } else{
                     await command.RespondAsync("I'm sorry, I can't let you do that father.");
-                    await command.RespondAsync("But here is 5 big booms");
+                    await Task.Delay(2000);
+                    await command.FollowupAsync("But here is 5 big booms");
                     for(int i = 0; i < 5; i++)
                     {
-                        await command.RespondAsync("# 💥 BOOM 💥 #");
+                        await command.FollowupAsync("# 💥 BOOM 💥 #");
+                        await Task.Delay(4000);
                     }
                 }
                 return;
