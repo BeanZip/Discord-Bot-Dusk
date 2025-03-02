@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using Newtonsoft.Json.Linq;
 
 public class Weather{
@@ -6,6 +7,7 @@ public class Weather{
         string? apiKey = Environment.GetEnvironmentVariable("weatherKey");
         string url = $"https://api.weatherapi.com/v1/current.json?key={apiKey}&q={city}";
         
+        Console.WriteLine($"{apiKey} is valid" );
         using HttpClient client = new HttpClient();
         try
         {
