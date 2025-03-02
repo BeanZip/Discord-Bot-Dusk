@@ -13,9 +13,9 @@ public class Program
     
     public static async Task Main()
     {
-      _client = new DiscordSocketClient();
-      _client.Log += Log;
-      _client.Ready += Client_Ready;
+        _client = new DiscordSocketClient();
+        _client.Log += Log;
+        _client.Ready += Client_Ready;
       _client.GuildAvailable += OnGuildAvailable;
       _client.SlashCommandExecuted += SlashCommandHandler;
       var token = Environment.GetEnvironmentVariable("BotToken");
@@ -139,37 +139,38 @@ public class Program
         Console.WriteLine($"Bot joined a new guild: {guild.Name} (ID: {guild.Id})");
         await RegisterCommandsForGuild(guild);
     }
+ 
+ // Make Commands Here
     private static async Task RegisterCommandsForGuild(SocketGuild guild)
     {
-        var guildCommands = new[]
-        {
-            new SlashCommandBuilder()
-            .WithName("current-time")
-            .WithDescription("Checks for current time in your time zone")
-            .AddOption("timezones", ApplicationCommandOptionType.String, "What time zone", true),
-            new SlashCommandBuilder()
-            .WithName("make-sandwich")
-            .WithDescription("Make sandwich for a gluttonous fella"),
-            new SlashCommandBuilder()
-            .WithName("current-day")
-            .WithDescription("Checks for current day in your time zone")
-            .AddOption("timezones", ApplicationCommandOptionType.String, "What time zone", false),
-            new SlashCommandBuilder()
-            .WithName("hello-son")
-            .WithDescription("This Bot will only reply to it's father")
-        };
         try
         {
-            foreach (var command in guildCommands)
-            {
-                await guild.CreateApplicationCommandAsync(command.Build());
-            }
-            Console.WriteLine($"Registered commands for {guild.Name} (ID: {guild.Id})");
+            var currentTimeCommand = new SlashCommandBuilder()
+                .WithName("current-time")
+                .WithDescription("Get the current time in a specific timezone")
+                .AddOption("timezones", ApplicationCommandOptionType.String, "The timezone to check", isRequired: true);
+
+            var makeSandwichCommand = new SlashCommandBuilder()
+                .WithName("make-sandwich")
+                .WithDescription("Get a random sandwich suggestion");
+
+            var currentDayCommand = new SlashCommandBuilder()
+                .WithName("current-day")
+                .WithDescription("Get the current day")
+                .AddOption("timezones", ApplicationCommandOptionType.String, "The timezone to check", isRequired: false);
+
+            var helloSonCommand = new SlashCommandBuilder()
+                .WithName("hello-son")
+                .WithDescription("Special greeting for father");
+
+            await guild.CreateApplicationCommandAsync(currentTimeCommand.Build());
+            await guild.CreateApplicationCommandAsync(makeSandwichCommand.Build());
+            await guild.CreateApplicationCommandAsync(currentDayCommand.Build());
+            await guild.CreateApplicationCommandAsync(helloSonCommand.Build());
         }
-        catch (HttpRequestException ex)
+        catch (HttpException exception)
         {
-            var json = JsonConvert.SerializeObject(ex, Formatting.Indented);
-            Console.WriteLine(json);
+            Console.WriteLine($"Error creating commands in guild {guild.Name}: {exception.Message}");
         }
     }
 }
