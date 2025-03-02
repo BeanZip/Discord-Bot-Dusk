@@ -111,6 +111,22 @@ public class Program
                 // Send response
                 await command.RespondAsync($"{userTime:dddd, MMMM dd yyyy} is the current day in {userTimeZone2}.");
                 return;
+            case "hello-son":
+            switch(command.User.Id)
+            {
+                default:
+                        var fatherId = Environment.GetEnvironmentVariable("FatherId");
+                        if (fatherId != null && command.User.Id == ulong.Parse(fatherId))
+                        {
+                            await command.RespondAsync("Hello Father! Thank you for creating me.");
+                        }
+                        else
+                        {
+                            await command.RespondAsync("I'm sorry, I can only respond to my father.");
+                        }
+                        break;
+            }
+            return;    
 
         }
     }
@@ -135,6 +151,9 @@ public class Program
             .WithName("current-day")
             .WithDescription("Checks for current day in your time zone")
             .AddOption("timezones", ApplicationCommandOptionType.String, "What time zone", false)
+            new SlashCommandBuilder()
+            .WithName("hello-son")
+            .WithDescription("This Bot will only reply to it's father")
         };
         try
         {
