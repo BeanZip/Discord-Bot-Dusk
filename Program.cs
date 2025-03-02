@@ -93,7 +93,7 @@ public class Program
                 string? userTimeZone2 = optionMore?.Value?.ToString()?.ToUpper();
                 if (string.IsNullOrEmpty(userTimeZone2))
                 {
-                    await command.RespondAsync($"{DateTime.Today:dddd, MMMM dd yyyy} is the current day.");
+                    await command.RespondAsync($"{DateTime.Today:dddd, MMMM dd yyyy} is the current day. {command.User.Mention}");
                     return;
                 }
 
