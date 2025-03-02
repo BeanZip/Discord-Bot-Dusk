@@ -86,9 +86,32 @@ public class Program
                 await command.RespondAsync($"Here is your {responseMessage} sandwich.");
                 return;
             case "current-day":
-                DateTime currentDay = DateTime.Today;
-                await command.RespondAsync($"{currentDay.DayOfWeek} is the current day on {currentDay:MMMM yyyy}.");
+                var optionMore = command.Data.Options.FirstOrDefault(o => o.Name == "timezones");
+                string userTimeZone2 = optionMore?.Value?.ToString().ToUpper();
+    
+                if (string.IsNullOrEmpty(userTimeZone2))
+                {
+                    await command.RespondAsync($"{DateTime.Today:dddd, MMMM dd yyyy} is the current day.");
+                    return;
+                }
+
+                // Convert from UTC to the given time zone
+                DateTime utcNow = DateTime.UtcNow;
+                TimeZoneInfo timeZone = userTimeZone2 switch
+                {
+                    "EST" => TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time"),
+                    "PST" => TimeZoneInfo.FindSystemTimeZoneById("Pacific Standard Time"),
+                    "CT" => TimeZoneInfo.FindSystemTimeZoneById("Central Standard Time"),
+                    "MT" => TimeZoneInfo.FindSystemTimeZoneById("Mountain Standard Time"),
+                    _ => TimeZoneInfo.Local // Default case (use local timezone)
+                };
+
+                DateTime userTime = TimeZoneInfo.ConvertTimeFromUtc(utcNow, timeZone);
+
+                // Send response
+                await command.RespondAsync($"{userTime:dddd, MMMM dd yyyy} is the current day in {userTimeZone2}.");
                 return;
+
         }
     }
 
@@ -110,7 +133,8 @@ public class Program
             .WithDescription("Make sandwich for a gluttonous fella");
         var guildCommand3 = new SlashCommandBuilder()
             .WithName("current-day")
-            .WithDescription("Checks for current day in your time zone");
+            .WithDescription("Checks for current day in your time zone")
+            .AddOption("timezones", ApplicationCommandOptionType.String, "What time zone", false);
         try
         {
             await guild.CreateApplicationCommandAsync(guildCommand1.Build());
