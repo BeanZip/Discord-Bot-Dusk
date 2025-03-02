@@ -135,7 +135,7 @@ public class Program
                 if(command.User.Id != ulong.Parse(Environment.GetEnvironmentVariable("FatherId")))
                 {
                     await command.RespondAsync("# 💥 KABOOM 💥 #");
-                    await command.RespondAsync($"{command.User.Mention} has been blew himself up");
+                    await command.RespondAsync($"{command.User.Mention} has blew himself up");
                 } else{
                     await command.RespondAsync("I'm sorry, I can't let you do that father.");
                     await command.RespondAsync("But here is 5 big booms");
