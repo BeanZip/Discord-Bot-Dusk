@@ -52,13 +52,15 @@ public class Program
             case "current-time":
                 var option = command.Data.Options.FirstOrDefault(o => o.Name == "timezones");
 
-                if (option == null || option.Value == null)
+                if (option?.Value == null)
                 {
                     await command.RespondAsync("Please provide a valid time zone.");
                     return;
                 }
 
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
                 string userTimeZone = option.Value.ToString().ToUpper(); // Normalize case
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
 
                 if (!_timeZones.Contains(userTimeZone))
                 {
@@ -150,7 +152,7 @@ public class Program
             new SlashCommandBuilder()
             .WithName("current-day")
             .WithDescription("Checks for current day in your time zone")
-            .AddOption("timezones", ApplicationCommandOptionType.String, "What time zone", false)
+            .AddOption("timezones", ApplicationCommandOptionType.String, "What time zone", false),
             new SlashCommandBuilder()
             .WithName("hello-son")
             .WithDescription("This Bot will only reply to it's father")
@@ -163,9 +165,9 @@ public class Program
             }
             Console.WriteLine($"Registered commands for {guild.Name} (ID: {guild.Id})");
         }
-        catch (ApplicationCommandException ex)
+        catch (HttpRequestException ex)
         {
-            var json = JsonConvert.SerializeObject(ex.Errors, Formatting.Indented);
+            var json = JsonConvert.SerializeObject(ex, Formatting.Indented);
             Console.WriteLine(json);
         }
     }
