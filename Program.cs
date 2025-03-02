@@ -156,11 +156,7 @@ public class Program
             .AddOption("timezones", ApplicationCommandOptionType.String, "What time zone", false),
             new SlashCommandBuilder()
             .WithName("hello-son")
-            .WithDescription("This Bot will only reply to it's father"),
-            new SlashCommandBuilder()
-            .WithName("weather-check")
-            .WithDescription("Check the weather in your area")
-            .AddOption("location", ApplicationCommandOptionType.String, "Where are you?", true)
+            .WithDescription("This Bot will only reply to it's father")
         };
         try
         {
