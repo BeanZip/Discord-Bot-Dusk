@@ -3,7 +3,7 @@ using Newtonsoft.Json.Linq;
 public class Weather{
     public async Task<string> GetWeatherApi(string city)
     {
-        string? apiKey = Environment.GetEnvironmentVariable("WeatherKey");
+        string? apiKey = Environment.GetEnvironmentVariable("weatherKey");
         string url = $"https://api.weatherapi.com/v1/current.json?key={apiKey}&q={city}";
         
         using HttpClient client = new HttpClient();
