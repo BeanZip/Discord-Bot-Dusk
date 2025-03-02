@@ -131,6 +131,20 @@ public class Program
                     Console.WriteLine($"Error in hello-son command: {ex.Message}");
                 }
                 return;
+            case "boom":
+                if(command.User.Id != ulong.Parse(Environment.GetEnvironmentVariable("FatherId")))
+                {
+                    await command.RespondAsync("# 💥 KABOOM 💥 #");
+                    await command.RespondAsync($"{command.User.Mention} has been blew himself up");
+                } else{
+                    await command.RespondAsync("I'm sorry, I can't let you do that father.");
+                    await command.RespondAsync("But here is 5 big booms");
+                    for(int i = 0; i < 5; i++)
+                    {
+                        await command.RespondAsync("# 💥 BOOM 💥 #");
+                    }
+                }
+                return;
         }
     }
 
@@ -163,7 +177,11 @@ public class Program
 
                 new SlashCommandBuilder()
                     .WithName("hello-son")
-                    .WithDescription("Special greeting for father")
+                    .WithDescription("Special greeting for father"),
+
+                new SlashCommandBuilder()
+                    .WithName("boom")
+                    .WithDescription("Boom!"),
             };
 
             foreach (var cmd in commands)
