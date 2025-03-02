@@ -82,7 +82,7 @@ public class Program
                 await command.RespondAsync($"It is {formattedTime} in {command.User.Mention} TimeZone (sent as {userTimeZone} btw)"); // Only returns the time
                 return;
             case "make-sandwich":
-                string[] response = { "Tuna", "Chicken", "Turkey", "Beef" };
+                string[] response = { "Tuna", "Chicken", "Turkey", "Beef", "Ham", "Pastrami", "BLT", "Club", "Grilled Cheese", "PB&J", "Egg Salad", "Roast Beef", "Italian", "Veggie", "Reuben", "French Dip", "Meatball", "Pulled Pork", "Cuban", "Caprese" };
                 Random random = new Random();
                 int randomIndex = random.Next(response.Length);
                 string responseMessage = response[randomIndex];
