@@ -129,7 +129,7 @@ public class Program
                         break;
             }
             return;    
-            case "weather-check":
+            /** case "weather-check":
                 var locationOption = command.Data.Options.FirstOrDefault(o => o.Name == "location");
                 if (locationOption?.Value == null)
                 {
@@ -155,7 +155,7 @@ public class Program
                         string result = task.Result;
                         command.RespondAsync(result);
                     });
-                return;
+                return; **/
         }
     }
 
