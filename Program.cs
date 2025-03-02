@@ -118,28 +118,30 @@ public class Program
     private static async Task OnGuildAvailable(SocketGuild guild)
     {
         Console.WriteLine($"Bot joined a new guild: {guild.Name} (ID: {guild.Id})");
-        
         await RegisterCommandsForGuild(guild);
     }
-
     private static async Task RegisterCommandsForGuild(SocketGuild guild)
     {
-        var guildCommand1 = new SlashCommandBuilder()
+        var guildCommands = new[]
+        {
+            new SlashCommandBuilder()
             .WithName("current-time")
             .WithDescription("Checks for current time in your time zone")
-            .AddOption("timezones", ApplicationCommandOptionType.String, "What time zone", true);
-        var guildCommand2 = new SlashCommandBuilder()
+            .AddOption("timezones", ApplicationCommandOptionType.String, "What time zone", true),
+            new SlashCommandBuilder()
             .WithName("make-sandwich")
-            .WithDescription("Make sandwich for a gluttonous fella");
-        var guildCommand3 = new SlashCommandBuilder()
+            .WithDescription("Make sandwich for a gluttonous fella"),
+            new SlashCommandBuilder()
             .WithName("current-day")
             .WithDescription("Checks for current day in your time zone")
-            .AddOption("timezones", ApplicationCommandOptionType.String, "What time zone", false);
+            .AddOption("timezones", ApplicationCommandOptionType.String, "What time zone", false)
+        };
         try
         {
-            await guild.CreateApplicationCommandAsync(guildCommand1.Build());
-            await guild.CreateApplicationCommandAsync(guildCommand2.Build());
-            await guild.CreateApplicationCommandAsync(guildCommand3.Build());
+            foreach (var command in guildCommands)
+            {
+                await guild.CreateApplicationCommandAsync(command.Build());
+            }
             Console.WriteLine($"Registered commands for {guild.Name} (ID: {guild.Id})");
         }
         catch (ApplicationCommandException ex)
