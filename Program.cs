@@ -77,14 +77,14 @@ public class Program
                     _ => "Unknown Time Zone"
                 };
 
-                await command.RespondAsync(formattedTime); // Only returns the time
+                await command.RespondAsync($"It is {formattedTime} in @{command.User} TimeZone (sent as {userTimeZone} btw)"); // Only returns the time
                 return;
             case "make-sandwich":
                 string[] response = { "Tuna", "Chicken", "Turkey", "Beef" };
                 Random random = new Random();
                 int randomIndex = random.Next(response.Length);
                 string responseMessage = response[randomIndex];
-                await command.RespondAsync($"Here is your {responseMessage} sandwich.");
+                await command.RespondAsync($"@{command.User}Here is your {responseMessage} sandwich.");
                 return;
             case "current-day":
                 var optionMore = command.Data.Options.FirstOrDefault(o => o.Name == "timezones");
