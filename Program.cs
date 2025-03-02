@@ -114,49 +114,23 @@ public class Program
                 await command.RespondAsync($"{userTime:dddd, MMMM dd yyyy} is the current day in {userTimeZone2}.");
                 return;
             case "hello-son":
-            await command.DeferAsync();
-            switch(command.User.Id)
-            {
-                default:
-                        var fatherId = Environment.GetEnvironmentVariable("FatherId");
-                        if (fatherId != null && command.User.Id == ulong.Parse(fatherId))
-                        {
-                            await command.FollowupAsync("Hello Father! Thank you for creating me.");
-                        }
-                        else
-                        {
-                            await command.FollowupAsync("I'm sorry, I can only respond to my father.");
-                        }
-                        break;
-            }
-            return;    
-            /** case "weather-check":
-                var locationOption = command.Data.Options.FirstOrDefault(o => o.Name == "location");
-                if (locationOption?.Value == null)
+                try
                 {
-                    await command.RespondAsync("Please provide a valid location.");
-                    return;
-                } 
-                
-                string? location = locationOption.Value.ToString();
-                if (string.IsNullOrEmpty(location))
-                {
-                    await command.RespondAsync("Please provide a valid location.");
-                    return;
-                }
-
-                Weather weather = new Weather();
-                await weather.GetWeatherApi(location).ContinueWith(task =>
+                    var fatherId = Environment.GetEnvironmentVariable("FatherId");
+                    if (fatherId != null && command.User.Id == ulong.Parse(fatherId))
                     {
-                        if (task.IsFaulted)
-                        {
-                            Console.WriteLine(task.Exception);
-                            return;
-                        }
-                        string result = task.Result;
-                        command.RespondAsync(result);
-                    });
-                return; **/
+                        await command.RespondAsync("Hello Father! Thank you for creating me.");
+                    }
+                    else
+                    {
+                        await command.RespondAsync("I'm sorry, I can only respond to my father.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error in hello-son command: {ex.Message}");
+                }
+                return;
         }
     }
 
