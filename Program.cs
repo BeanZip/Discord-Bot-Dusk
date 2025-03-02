@@ -143,7 +143,7 @@ public class Program
                     for(int i = 0; i < 5; i++)
                     {
                         await command.FollowupAsync("# 💥 BOOM 💥 #");
-                        await Task.Delay(4000);
+                        await Task.Delay(500);
                     }
                 }
                 return;
