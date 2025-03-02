@@ -4,7 +4,7 @@ using Newtonsoft.Json.Linq;
 public class Weather{
     public async Task<string> GetWeatherApi(string city)
     {
-        string? apiKey = Environment.GetEnvironmentVariable("weatherKey");
+        string? apiKey = Environment.GetEnvironmentVariable("WKey");
         string url = $"https://api.weatherapi.com/v1/current.json?key={apiKey}&q={city}";
         
         Console.WriteLine($"{apiKey} is valid" );
