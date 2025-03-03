@@ -49,7 +49,7 @@ namespace Discord_Bot_Dusk
                         .AddOption("timezones", ApplicationCommandOptionType.String, "The timezone to check", isRequired: false),
                     new SlashCommandBuilder()
                         .WithName("tarot")
-                        .WithDescription("Get a random tarot card that has a chance of random effe"),
+                        .WithDescription("Get a random tarot card that has a chance of random effect"),
                         
                 };
 
