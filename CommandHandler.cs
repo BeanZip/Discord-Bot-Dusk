@@ -186,9 +186,8 @@ namespace Discord_Bot_Dusk
                     return;
                 
                 case "delete-command":
-                    if(ulong.Parse(devId) != command.User.Id){
-                        await command.RespondAsync("You are not authorized to do that!");
-                    } else{
+                    if (devId != null && command.User.Id == ulong.Parse(devId))
+                    {
                         var optionCommand = command.Data.Options.FirstOrDefault(o => o.Name == "command");
                         if (optionCommand?.Value == null)
                         {
@@ -201,7 +200,9 @@ namespace Discord_Bot_Dusk
                         {
                             await command.RespondAsync("Please provide a valid command to delete.");
                             return;
-                        } else if(!command.GuildId.HasValue){
+                        }
+                        else if (!command.GuildId.HasValue)
+                        {
                             await command.RespondAsync("This command can only be used in a server.");
                             return;
                         }
@@ -215,6 +216,14 @@ namespace Discord_Bot_Dusk
 
                         await commandToDelete.DeleteAsync();
                         await command.RespondAsync($"Command {commandName} has been deleted.");
+                    }
+                    else
+                    {
+                        await command.RespondAsync("You are not authorized to do that!");
+                        if(devId == null)
+                        {
+                            await command.FollowupAsync("Father ID not found. Please set the Father ID in the environment variables.", ephemeral: true);
+                        }
                     }
                     return;
         }
