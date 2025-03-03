@@ -132,7 +132,8 @@ public class Program
                 }
                 return;
             case "boom":
-                if(command.User.Id != ulong.Parse(Environment.GetEnvironmentVariable("FatherId")))
+                var fatherId = Environment.GetEnvironmentVariable("FatherId");
+                if(command.User.Id == ulong.Parse(fatherId) || fatherId == null)
                 {
                     await command.RespondAsync("# 💥 KABOOM 💥 #");
                     await command.FollowupAsync($"{command.User.Mention} has blew himself up");
