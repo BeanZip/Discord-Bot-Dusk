@@ -104,7 +104,7 @@ namespace Discord_Bot_Dusk
                     else
                     {
                         await command.RespondAsync("I'm sorry, I can't let you do that father.");
-                        await Task.Delay(2000);
+                        await Task.Delay(1000);
                         await command.FollowupAsync("But here is 5 big booms");
                         for (int i = 0; i < 5; i++)
                         {
