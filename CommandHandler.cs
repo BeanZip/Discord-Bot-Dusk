@@ -153,6 +153,46 @@ namespace Discord_Bot_Dusk
                     await Task.Delay(time * 1000);
                     await command.FollowupAsync($"{command.User.Mention} Your timer has ended.");
                     return;
+                case "set-reminder":
+                    var optionDate = command.Data.Options.FirstOrDefault(o => o.Name == "date");
+                    var optionMessage = command.Data.Options.FirstOrDefault(o => o.Name == "message");
+                    var optionTimeZone = command.Data.Options.FirstOrDefault(o => o.Name == "timezones");
+
+                    if (optionDate?.Value == null || optionMessage?.Value == null)
+                    {
+                        await command.RespondAsync("Please provide a valid date and message to set the reminder for.");
+                        return;
+                    
+                    } else{
+                        string? dateStr = optionDate.Value.ToString();
+                        string? message = optionMessage.Value.ToString();
+                        string? timeZoneStr = optionTimeZone?.Value?.ToString()?.ToUpper();
+
+                        if (string.IsNullOrEmpty(dateStr) || string.IsNullOrEmpty(message))
+                        {
+                            await command.RespondAsync("Please provide a valid date and message to set the reminder for.");
+                            return;
+                        }
+
+                        DateTime date = DateTime.Parse(dateStr);
+                        TimeZoneInfo timeZone2 = timeZoneStr switch
+                        {
+                            "EST" => TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time"),
+                            "PST" => TimeZoneInfo.FindSystemTimeZoneById("Pacific Standard Time"),
+                            "CT" => TimeZoneInfo.FindSystemTimeZoneById("Central Standard Time"),
+                            "MT" => TimeZoneInfo.FindSystemTimeZoneById("Mountain Standard Time"),
+                            _ => TimeZoneInfo.Local // Default case (use local timezone)
+                        };
+
+                        // Convert the date to the given time zone
+                        DateTime userDate = TimeZoneInfo.ConvertTime(date, timeZone);
+
+                        // Send response
+                        await command.RespondAsync($"{command.User.Mention} Reminder set for {userDate:dddd, MMMM dd yyyy} at {userDate:hh:mm tt}.");
+                        await Task.Delay((int)(userDate - DateTime.UtcNow).TotalMilliseconds);
+                        await command.FollowupAsync($"{command.User.Mention} Reminder: {message}");
+                    }
+                    return;
                 case "dev-only-command":
                     if (!DeveloperIds.Contains(command.User.Id))
                     {
