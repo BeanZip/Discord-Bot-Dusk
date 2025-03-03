@@ -189,6 +189,7 @@ namespace Discord_Bot_Dusk
                     await command.RespondAsync("Developer-only command executed successfully.");
                     return;
                 case "tarot":
+                    if(command.User.Id != devId){
                     string[] tarotCards = { "The Fool", "The Magician", "The High Priestess", "The Empress", "The Emperor", "The Lovers", "The Chariot", "Death", "The Tower", "The Star" };
                     Random randomCard = new Random();
                     int randomIndexCard = randomCard.Next(tarotCards.Length);
@@ -197,6 +198,8 @@ namespace Discord_Bot_Dusk
                     await command.RespondAsync($"{command.User.Mention} Your random tarot card is: {randomCardMessage}");
                     await command.FollowupAsync("This card has a chance of random effect. Which is currently WIP!");
                      return;
+                    }
+                    return;
             }
         }
     }
