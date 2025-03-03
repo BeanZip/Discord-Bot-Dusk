@@ -9,6 +9,12 @@ namespace Discord_Bot_Dusk
     {
         private static readonly string[] _timeZones = { "EST", "PST", "CT", "MT" };
         private static readonly ulong devId = ulong.Parse(Environment.GetEnvironmentVariable("FatherId") ?? "0");
+        private static DiscordSocketClient _client;
+
+        public static void Initialize(DiscordSocketClient client)
+        {
+            _client = client;
+        }
 
         public static async Task HandleCommand(SocketSlashCommand command)
         {
@@ -178,29 +184,40 @@ namespace Discord_Bot_Dusk
                         await command.FollowupAsync($"{command.User.Mention} Reminder: {message}");
                     }
                     return;
-                case "dev-only-command":
-                    if (devId != command.User.Id)
-                    {
-                        await command.RespondAsync("This command is restricted to developers only.");
-                        return;
-                    }
+                
+                case "delete-command":
+                    if(devId != command.User.Id){
+                        await command.RespondAsync("You are not authorized to do that!");
+                    } else{
+                        var optionCommand = command.Data.Options.FirstOrDefault(o => o.Name == "command");
+                        if (optionCommand?.Value == null)
+                        {
+                            await command.RespondAsync("Please provide a valid command to delete.");
+                            return;
+                        }
 
-                    // Developer-only command logic here
-                    await command.RespondAsync("Developer-only command executed successfully.");
-                    return;
-                case "tarot":
-                    if(command.User.Id != devId){
-                    string[] tarotCards = { "The Fool", "The Magician", "The High Priestess", "The Empress", "The Emperor", "The Lovers", "The Chariot", "Death", "The Tower", "The Star" };
-                    Random randomCard = new Random();
-                    int randomIndexCard = randomCard.Next(tarotCards.Length);
+                        string? commandName = optionCommand.Value.ToString();
+                        if (string.IsNullOrEmpty(commandName))
+                        {
+                            await command.RespondAsync("Please provide a valid command to delete.");
+                            return;
+                        } else if(!command.GuildId.HasValue){
+                            await command.RespondAsync("This command can only be used in a server.");
+                            return;
+                        }
 
-                    string randomCardMessage = tarotCards[randomIndexCard];
-                    await command.RespondAsync($"{command.User.Mention} Your random tarot card is: {randomCardMessage}");
-                    await command.FollowupAsync("This card has a chance of random effect. Which is currently WIP!");
-                     return;
+                        var commandToDelete = await _client.GetGlobalApplicationCommandAsync(command.GuildId.Value);
+                        if (commandToDelete == null)
+                        {
+                            await command.RespondAsync("Command not found.");
+                            return;
+                        }
+
+                        await commandToDelete.DeleteAsync();
+                        await command.RespondAsync($"Command {commandName} has been deleted.");
                     }
                     return;
-            }
         }
     }
+  }
 }

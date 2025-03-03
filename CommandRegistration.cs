@@ -48,9 +48,9 @@ namespace Discord_Bot_Dusk
                         .AddOption("message", ApplicationCommandOptionType.String, "The message to remind you with", isRequired: true)
                         .AddOption("timezones", ApplicationCommandOptionType.String, "The timezone to check", isRequired: false),
                     new SlashCommandBuilder()
-                        .WithName("tarot")
-                        .WithDescription("Get a random tarot card that has a chance of random effect"),
-                        
+                        .WithName("delete-command")
+                        .WithDescription("Delete a command from the bot")
+                        .AddOption("command", ApplicationCommandOptionType.String, "The command to delete", isRequired: true)                        
                 };
 
                 foreach (var cmd in commands)
