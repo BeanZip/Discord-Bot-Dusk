@@ -185,7 +185,7 @@ namespace Discord_Bot_Dusk
                         };
 
                         // Convert the date to the given time zone
-                        DateTime userDate = TimeZoneInfo.ConvertTime(date, timeZone);
+                        DateTime userDate = TimeZoneInfo.ConvertTime(date, timeZone2);
 
                         // Send response
                         await command.RespondAsync($"{command.User.Mention} Reminder set for {userDate:dddd, MMMM dd yyyy} at {userDate:hh:mm tt}.");
