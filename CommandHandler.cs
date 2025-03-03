@@ -223,6 +223,9 @@ namespace Discord_Bot_Dusk
                         if(devId == null)
                         {
                             await command.FollowupAsync("Father ID not found. Please set the Father ID in the environment variables.", ephemeral: true);
+                            if(ulong.TryParse(Environment.GetEnvironmentVariable("FatherId"), out ulong parsedId) && parsedId == command.User.Id){
+                                await command.FollowupAsync($"Father ID has been set to {parsedId}.", ephemeral: true);
+                            }
                         }
                     }
                     return;
