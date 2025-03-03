@@ -87,7 +87,7 @@ namespace Discord_Bot_Dusk
                 case "hello-son":
                     try
                     {
-                        if (ulong.Parse(devId) == command.User.Id)
+                        if (devId != null && ulong.Parse(devId) == command.User.Id)
                         {
                             await command.RespondAsync("Hello Father! Thank you for creating me.");
                         }
@@ -102,7 +102,7 @@ namespace Discord_Bot_Dusk
                     }
                     return;
                 case "boom":
-                    if (ulong.Parse(devId) == command.User.Id)
+                    if (devId != null && ulong.Parse(devId) == command.User.Id)
                     {
                         await command.RespondAsync("# 💥 KABOOM 💥 #");
                         await command.FollowupAsync($"{command.User.Mention} has blown themselves up");
