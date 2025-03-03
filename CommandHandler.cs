@@ -114,7 +114,7 @@ namespace Discord_Bot_Dusk
                     if (DeveloperIds != null && DeveloperIds.Contains(command.User.Id))
                     {
                         await command.RespondAsync("# 💥 KABOOM 💥 #");
-                        await command.FollowupAsync($"{command.User.Mention} has blew himself up");
+                        await command.FollowupAsync($"{command.User.Mention} has blown themselves up");
                     }
                     else
                     {
