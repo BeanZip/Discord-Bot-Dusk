@@ -8,8 +8,8 @@ namespace Discord_Bot_Dusk
     public class CommandHandler
     {
         private static readonly string[] _timeZones = { "EST", "PST", "CT", "MT" };
-        private static readonly ulong devId = ulong.Parse(Environment.GetEnvironmentVariable("FatherId") ?? "0");
-        private static DiscordSocketClient _client;
+        private static readonly string? devId = Environment.GetEnvironmentVariable("FatherId");
+        private static DiscordSocketClient? _client;
 
         public static void Initialize(DiscordSocketClient client)
         {
@@ -87,7 +87,7 @@ namespace Discord_Bot_Dusk
                 case "hello-son":
                     try
                     {
-                        if (devId == command.User.Id)
+                        if (ulong.Parse(devId) == command.User.Id)
                         {
                             await command.RespondAsync("Hello Father! Thank you for creating me.");
                         }
@@ -102,7 +102,7 @@ namespace Discord_Bot_Dusk
                     }
                     return;
                 case "boom":
-                    if (devId == command.User.Id)
+                    if (ulong.Parse(devId) == command.User.Id)
                     {
                         await command.RespondAsync("# 💥 KABOOM 💥 #");
                         await command.FollowupAsync($"{command.User.Mention} has blown themselves up");
@@ -186,7 +186,7 @@ namespace Discord_Bot_Dusk
                     return;
                 
                 case "delete-command":
-                    if(devId != command.User.Id){
+                    if(ulong.Parse(devId) != command.User.Id){
                         await command.RespondAsync("You are not authorized to do that!");
                     } else{
                         var optionCommand = command.Data.Options.FirstOrDefault(o => o.Name == "command");
