@@ -8,23 +8,7 @@ namespace Discord_Bot_Dusk
     public class CommandHandler
     {
         private static readonly string[] _timeZones = { "EST", "PST", "CT", "MT" };
-        private static readonly ulong[] DeveloperIds;
-
-        static CommandHandler()
-        {
-            try
-            {
-                var fatherIdStr = Environment.GetEnvironmentVariable("FatherId");
-                DeveloperIds = !string.IsNullOrEmpty(fatherIdStr) 
-                    ? fatherIdStr.Split(',').Where(id => !string.IsNullOrEmpty(id)).Select(ulong.Parse).ToArray() 
-                    : Array.Empty<ulong>();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error initializing DeveloperIds: {ex.Message}");
-                DeveloperIds = Array.Empty<ulong>();
-            }
-        }
+        private static readonly ulong devId = ulong.Parse(Environment.GetEnvironmentVariable("FatherId") ?? "0");
 
         public static async Task HandleCommand(SocketSlashCommand command)
         {
@@ -39,7 +23,9 @@ namespace Discord_Bot_Dusk
                         return;
                     }
 
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
                     string userTimeZone = option.Value.ToString().ToUpper(); // Normalize case
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
 
                     if (!_timeZones.Contains(userTimeZone))
                     {
@@ -95,8 +81,7 @@ namespace Discord_Bot_Dusk
                 case "hello-son":
                     try
                     {
-                        var fatherId = Environment.GetEnvironmentVariable("FatherId");
-                        if (fatherId != null && command.User.Id == ulong.Parse(fatherId))
+                        if (devId == command.User.Id)
                         {
                             await command.RespondAsync("Hello Father! Thank you for creating me.");
                         }
@@ -111,7 +96,7 @@ namespace Discord_Bot_Dusk
                     }
                     return;
                 case "boom":
-                    if (DeveloperIds != null && DeveloperIds.Contains(command.User.Id))
+                    if (devId == command.User.Id)
                     {
                         await command.RespondAsync("# 💥 KABOOM 💥 #");
                         await command.FollowupAsync($"{command.User.Mention} has blown themselves up");
@@ -194,7 +179,7 @@ namespace Discord_Bot_Dusk
                     }
                     return;
                 case "dev-only-command":
-                    if (!DeveloperIds.Contains(command.User.Id))
+                    if (devId != command.User.Id)
                     {
                         await command.RespondAsync("This command is restricted to developers only.");
                         return;
