@@ -132,14 +132,14 @@ public class Program
                 }
                 return;
             case "boom":
-                var fatherId = Environment.GetEnvironmentVariable("FatherId");
-                if(command.User.Id == ulong.Parse(fatherId) || fatherId == null)
+                var fatherId2 = Environment.GetEnvironmentVariable("FatherId");
+                if(fatherId2 != null && command.User.Id == ulong.Parse(fatherId2) || fatherId2 == null)
                 {
                     await command.RespondAsync("# 💥 KABOOM 💥 #");
                     await command.FollowupAsync($"{command.User.Mention} has blew himself up");
                 } else{
                     await command.RespondAsync("I'm sorry, I can't let you do that father.");
-                    await Task.Delay(2000);
+                    await Task.Delay(2000); 
                     await command.FollowupAsync("But here is 5 big booms");
                     for(int i = 0; i < 5; i++)
                     {
