@@ -43,7 +43,7 @@ namespace Discord_Bot_Dusk
 
                     new SlashCommandBuilder()
                         .WithName("set-reminder")
-                        .WithDescription("Set a reminder for a specific time in a Date")
+                        .WithDescription("Set a reminder for a specific time in a Date formatted as MM/dd/yyyy")
                         .AddOption("date", ApplicationCommandOptionType.String, "The date to set the reminder for", isRequired: true)
                         .AddOption("message", ApplicationCommandOptionType.String, "The message to remind you with", isRequired: true)
                         .AddOption("timezones", ApplicationCommandOptionType.String, "The timezone to check", isRequired: false)
