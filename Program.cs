@@ -47,6 +47,7 @@ public class Program
     private static async Task OnGuildAvailable(SocketGuild guild)
     {
         Console.WriteLine($"Bot joined a new guild: {guild.Name} (ID: {guild.Id})");
+        Console.WriteLine($"Guild has {guild.MemberCount} members");
         await CommandRegistration.RegisterCommandsForGuild(guild);
     }
 }
