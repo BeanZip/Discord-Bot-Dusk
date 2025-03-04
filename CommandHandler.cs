@@ -90,6 +90,14 @@ namespace Discord_Bot_Dusk
                                 sandwiches.Add(sandwiches.Count, sandwichType);
                                 await command.RespondAsync($"{command.User.Mention} {sandwichType} sandwich has been added to the index.");
                                 return;
+                        } else if(optionType.Value.ToString() == "show"){
+                            string responseMessage = "Here are the available sandwiches: ";
+                            foreach (var sandwich in sandwiches)
+                            {
+                                responseMessage += $"{sandwich.Value}, ";
+                            }
+                            await command.RespondAsync(responseMessage);
+                            return;
                         }
                         return;
                 case "current-day":
