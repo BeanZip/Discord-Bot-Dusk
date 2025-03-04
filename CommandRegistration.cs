@@ -17,7 +17,7 @@ namespace Discord_Bot_Dusk
                     new SlashCommandBuilder()
                         .WithName("current-time")
                         .WithDescription("Get the current time in a specific timezone")
-                        .AddOption("timezones", ApplicationCommandOptionType.String, "The timezone to check", isRequired: false),
+                        .AddOption("timezones", ApplicationCommandOptionType.String, "The timezone to check", isRequired: true),
 
                     new SlashCommandBuilder()
                         .WithName("make-sandwich")
