@@ -53,12 +53,45 @@ namespace Discord_Bot_Dusk
                     await command.RespondAsync($"Currently it is {formattedTime} in {userTimeZone} {command.User.Mention}"); // Only returns the time
                     return;
                 case "make-sandwich":
-                    string[] response = { "Tuna", "Chicken", "Turkey", "Beef", "Ham", "Pastrami", "BLT", "Club", "Grilled Cheese", "PB&J", "Egg Salad", "Roast Beef", "Italian", "Veggie", "Reuben", "French Dip", "Meatball", "Pulled Pork", "Cuban", "Caprese" };
-                    Random random = new Random();
-                    int randomIndex = random.Next(response.Length);
-                    string responseMessage = response[randomIndex];
-                    await command.RespondAsync($"{command.User.Mention} Here is your {responseMessage} sandwich.");
-                    return;
+                        var optionType = command.Data.Options.FirstOrDefault(o => o.Name == "type");
+                        Dictionary<int, string> sandwiches = new()
+                        {
+                            {0, "Tuna"}, {1, "Chicken"}, {2, "Turkey"}, {3, "Beef"}, 
+                            {4, "Ham"}, {5, "Pastrami"}, {6, "BLT"}, {7, "Club"}, 
+                            {8, "Grilled Cheese"}, {9, "PB&J"}, {10, "Egg Salad"}, 
+                            {11, "Roast Beef"}, {12, "Italian"}, {13, "Veggie"}, 
+                            {14, "Reuben"}, {15, "French Dip"}, {16, "Meatball"}, 
+                            {17, "Pulled Pork"}, {18, "Cuban"}, {19, "Caprese"}
+                        };
+                        if (optionType == null)
+                        {
+                            Random random = new Random();
+                            int randomIndex = random.Next(sandwiches.Count);
+                            string responseMessage = sandwiches[randomIndex];
+                            await command.RespondAsync($"{command.User.Mention} Here is your {responseMessage} sandwich.");
+                            return;
+                        }
+                        else if (optionType.Value.ToString() == "add")
+                        {
+                                var optionSandwich = command.Data.Options.FirstOrDefault(o => o.Name == "sandwich");
+                                if (optionSandwich?.Value == null)
+                                {
+                                    await command.RespondAsync("Please provide a valid sandwich type to add.");
+                                    return;
+                                }
+
+                                string? sandwichType = optionSandwich.Value.ToString();
+                                if (string.IsNullOrEmpty(sandwichType))
+                                {
+                                    await command.RespondAsync("Please provide a valid sandwich type to add.");
+                                    return;
+                                }
+
+                                sandwiches.Add(sandwiches.Count, sandwichType);
+                                await command.RespondAsync($"{command.User.Mention} {sandwichType} sandwich has been added to the index.");
+                                return;
+                        }
+                        return;
                 case "current-day":
                     var optionMore = command.Data.Options.FirstOrDefault(o => o.Name == "timezones");
                     string? userTimeZone2 = optionMore?.Value?.ToString()?.ToUpper();
