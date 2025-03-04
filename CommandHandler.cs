@@ -247,6 +247,10 @@ namespace Discord_Bot_Dusk
                             await command.RespondAsync("This command can only be used in a server.");
                             return;
                         }
+                        if(_client == null){
+                            Console.WriteLine("Client not found");
+                            return;
+                        }
 
                         var commandToDelete = await _client.GetGlobalApplicationCommandAsync(command.GuildId.Value);
                         if (commandToDelete == null)
