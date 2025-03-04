@@ -150,7 +150,7 @@ namespace Discord_Bot_Dusk
                     }
                     return;
                 case "boom":
-                    if (devId != null && ulong.Parse(devId) == command.User.Id)
+                    if (devId != null && ulong.Parse(devId) != command.User.Id)
                     {
                         await command.RespondAsync("# 💥 KABOOM 💥 #");
                         await command.FollowupAsync($"{command.User.Mention} has blown themselves up");
