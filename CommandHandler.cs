@@ -93,7 +93,7 @@ namespace Discord_Bot_Dusk
                                 await command.RespondAsync($"{command.User.Mention} {sandwichType} sandwich has been added to the index.");
                                 break;
 
-                            case "show":
+                            case "menu":
                                 string showResponseMessage = "Here are the available sandwiches: ";
                                 foreach (var sandwich in sandwiches)
                                 {
