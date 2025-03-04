@@ -63,16 +63,18 @@ namespace Discord_Bot_Dusk
                             {14, "Reuben"}, {15, "French Dip"}, {16, "Meatball"}, 
                             {17, "Pulled Pork"}, {18, "Cuban"}, {19, "Caprese"}
                         };
-                        if (optionType == null)
+
+                        string? optionValue = optionType?.Value.ToString();
+                        switch (optionValue)
                         {
-                            Random random = new Random();
-                            int randomIndex = random.Next(sandwiches.Count);
-                            string responseMessage = sandwiches[randomIndex];
-                            await command.RespondAsync($"{command.User.Mention} Here is your {responseMessage} sandwich.");
-                            return;
-                        }
-                        else if (optionType.Value.ToString() == "add")
-                        {
+                            case "make":
+                                Random random = new Random();
+                                int randomIndex = random.Next(sandwiches.Count);
+                                string responseMessage = sandwiches[randomIndex];
+                                await command.RespondAsync($"{command.User.Mention} Here is your {responseMessage} sandwich.");
+                                break;
+
+                            case "add":
                                 var optionSandwich = command.Data.Options.FirstOrDefault(o => o.Name == "sandwich");
                                 if (optionSandwich?.Value == null)
                                 {
@@ -89,15 +91,20 @@ namespace Discord_Bot_Dusk
 
                                 sandwiches.Add(sandwiches.Count, sandwichType);
                                 await command.RespondAsync($"{command.User.Mention} {sandwichType} sandwich has been added to the index.");
-                                return;
-                        } else if(optionType.Value.ToString() == "show"){
-                            string responseMessage = "Here are the available sandwiches: ";
-                            foreach (var sandwich in sandwiches)
-                            {
-                                responseMessage += $"{sandwich.Value}, ";
-                            }
-                            await command.RespondAsync(responseMessage);
-                            return;
+                                break;
+
+                            case "show":
+                                string showResponseMessage = "Here are the available sandwiches: ";
+                                foreach (var sandwich in sandwiches)
+                                {
+                                    showResponseMessage += $"{sandwich.Value}, ";
+                                }
+                                await command.RespondAsync(showResponseMessage);
+                                break;
+
+                            default:
+                                await command.RespondAsync("Unknown sandwich command option.");
+                                break;
                         }
                         return;
                 case "current-day":

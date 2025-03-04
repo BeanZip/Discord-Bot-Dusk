@@ -22,7 +22,7 @@ namespace Discord_Bot_Dusk
                     new SlashCommandBuilder()
                         .WithName("make-sandwich")
                         .WithDescription("Get a random sandwich suggestion")
-                        .AddOption("operation-type", ApplicationCommandOptionType.String, "The type of Operation you wanna use", isRequired: false)
+                        .AddOption("operation-type", ApplicationCommandOptionType.String, "The type of Operation you wanna use", isRequired: true)
                         .AddOption("sandwich-type", ApplicationCommandOptionType.String, "The type of sandwich you wanna add to the index", isRequired: false),
                     new SlashCommandBuilder()
                         .WithName("current-day")
