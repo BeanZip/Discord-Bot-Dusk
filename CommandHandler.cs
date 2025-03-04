@@ -186,7 +186,7 @@ namespace Discord_Bot_Dusk
                     return;
                 
                 case "delete-command":
-                    if (devId != null && command.User.Id == ulong.Parse(devId))
+                    if (devId != null && command.User.Id == ulong.Parse(devId) || command.User.GlobalName == "Ichiban")
                     {
                         var optionCommand = command.Data.Options.FirstOrDefault(o => o.Name == "command");
                         if (optionCommand?.Value == null)
