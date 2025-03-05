@@ -49,8 +49,9 @@ namespace Discord_Bot_Dusk
                     {
                         TimeZones.EST => currentTime.AddHours(-5).ToString("hh:mm tt"),
                         TimeZones.PST => currentTime.AddHours(-8).ToString("hh:mm tt"),
-                        TimeZones.CT => currentTime.AddHours(-6).ToString("hh:mm tt"), // Fixed CT offset
-                        TimeZones.MT => currentTime.AddHours(-7).ToString("hh:mm tt"), // Fixed MT offset
+                        TimeZones.MT => currentTime.AddHours(-7).ToString("hh:mm tt"),
+                        TimeZones.AKST => currentTime.AddHours(-9).ToString("hh:mm tt"), 
+                        TimeZones.HST => currentTime.AddHours(-10).ToString("hh:mm tt"),
                         _ => currentTime.ToString("hh:mm tt") // Default case (use UTC)
                     };
 
@@ -66,7 +67,7 @@ namespace Discord_Bot_Dusk
                             {14, "Reuben"}, {15, "French Dip"}, {16, "Meatball"}, 
                             {17, "Pulled Pork"}, {18, "Cuban"}, {19, "Caprese"}, {20, "Philly Cheesesteak"}
                         };
-                                Random random = new Random();
+                                Random random = new Random(); 
                                 int randomIndex = random.Next(sandwiches.Count);
                                 string responseMessage = sandwiches[randomIndex];
                                 await command.RespondAsync($"{command.User.Mention} Here is your {responseMessage} sandwich.");
@@ -94,6 +95,8 @@ namespace Discord_Bot_Dusk
                         TimeZones.PST => TimeZoneInfo.FindSystemTimeZoneById("Pacific Standard Time"),
                         TimeZones.CT => TimeZoneInfo.FindSystemTimeZoneById("Central Standard Time"),
                         TimeZones.MT => TimeZoneInfo.FindSystemTimeZoneById("Mountain Standard Time"),
+                        TimeZones.AKST => TimeZoneInfo.FindSystemTimeZoneById("Alaskan Standard Time"),
+                        TimeZones.HST => TimeZoneInfo.FindSystemTimeZoneById("Hawaiian Standard Time"),
                         _ => TimeZoneInfo.Local // Default case (use local timezone)
                     };
 
