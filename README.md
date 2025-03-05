@@ -2,7 +2,7 @@
 
 ## Summary
 
-This is a discord bot coded in C# using [Discord.Net](https://docs.discordnet.dev/index.html). All it does is tracks the time for you and other miscellaneous stuff.
+This is a Discord bot coded in C# using [Discord.Net](https://docs.discordnet.dev/index.html). All it does is tracks the time for you and other miscellaneous stuff.
 
 If you're interested in helping, please submit a PR.
 

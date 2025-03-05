@@ -10,7 +10,7 @@ namespace Discord_Bot_Dusk
     /// </summary>
     public class CommandHandler
     {
-        private static readonly string[] _timeZones = { "EST", "PST", "CT", "MT" };
+        private static TimeZones TimeZone;
         private static readonly string? devId = Environment.GetEnvironmentVariable("FatherId");
         private static DiscordSocketClient? _client;
         
@@ -35,31 +35,23 @@ namespace Discord_Bot_Dusk
                 case "current-time":
                     var option = command.Data.Options.FirstOrDefault(o => o.Name == "timezones");
 
-                    if (option?.Value == null)
-                    {
-                        await command.RespondAsync("Please provide a valid time zone.");
-                        return;
-                    }
-
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
                     string userTimeZone = option.Value.ToString().ToUpper(); // Normalize case
 #pragma warning restore CS8602 // Dereference of a possibly null reference.
 
-                    if (!_timeZones.Contains(userTimeZone))
-                    {
-                        await command.RespondAsync("Invalid Time Zone. Please use: US Time Zone");
-                        return;
-                    }
 
                     // Get current UTC time and convert to the selected time zone
                     DateTime currentTime = DateTime.UtcNow;
-                    string formattedTime = userTimeZone switch
+                    // Convert using enum instead of string comparison
+                    TimeZone = Enum.Parse<TimeZones>(userTimeZone);
+                    
+                    string formattedTime = TimeZone switch
                     {
-                        "EST" => currentTime.AddHours(-5).ToString("hh:mm tt"), // Returns only time
-                        "PST" => currentTime.AddHours(-8).ToString("hh:mm tt"),
-                        "CT" => currentTime.AddHours(-3).ToString("hh:mm tt"),
-                        "MT" => currentTime.AddHours(-2).ToString("hh:mm tt"),
-                        _ => "Unknown Time Zone"
+                        TimeZones.EST => currentTime.AddHours(-5).ToString("hh:mm tt"),
+                        TimeZones.PST => currentTime.AddHours(-8).ToString("hh:mm tt"),
+                        TimeZones.CT => currentTime.AddHours(-6).ToString("hh:mm tt"), // Fixed CT offset
+                        TimeZones.MT => currentTime.AddHours(-7).ToString("hh:mm tt"), // Fixed MT offset
+                        _ => currentTime.ToString("hh:mm tt") // Default case (use UTC)
                     };
 
                     await command.RespondAsync($"Currently it is {formattedTime} in {userTimeZone} {command.User.Mention}"); // Only returns the time
@@ -72,7 +64,7 @@ namespace Discord_Bot_Dusk
                             {8, "Grilled Cheese"}, {9, "PB&J"}, {10, "Egg Salad"}, 
                             {11, "Roast Beef"}, {12, "Italian"}, {13, "Veggie"}, 
                             {14, "Reuben"}, {15, "French Dip"}, {16, "Meatball"}, 
-                            {17, "Pulled Pork"}, {18, "Cuban"}, {19, "Caprese"}
+                            {17, "Pulled Pork"}, {18, "Cuban"}, {19, "Caprese"}, {20, "Philly Cheesesteak"}
                         };
                                 Random random = new Random();
                                 int randomIndex = random.Next(sandwiches.Count);
@@ -90,12 +82,18 @@ namespace Discord_Bot_Dusk
 
                     // Convert from UTC to the given time zone
                     DateTime utcNow = DateTime.UtcNow;
-                    TimeZoneInfo timeZone = userTimeZone2 switch
+                    if (!Enum.TryParse(userTimeZone2, out TimeZones timezone))
                     {
-                        "EST" => TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time"),
-                        "PST" => TimeZoneInfo.FindSystemTimeZoneById("Pacific Standard Time"),
-                        "CT" => TimeZoneInfo.FindSystemTimeZoneById("Central Standard Time"),
-                        "MT" => TimeZoneInfo.FindSystemTimeZoneById("Mountain Standard Time"),
+                        await command.RespondAsync("Invalid Time Zone. Please use: EST, PST, CT, or MT");
+                        return;
+                    }
+                    
+                    TimeZoneInfo timeZone = timezone switch
+                    {
+                        TimeZones.EST => TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time"),
+                        TimeZones.PST => TimeZoneInfo.FindSystemTimeZoneById("Pacific Standard Time"),
+                        TimeZones.CT => TimeZoneInfo.FindSystemTimeZoneById("Central Standard Time"),
+                        TimeZones.MT => TimeZoneInfo.FindSystemTimeZoneById("Mountain Standard Time"),
                         _ => TimeZoneInfo.Local // Default case (use local timezone)
                     };
 

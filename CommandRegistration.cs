@@ -30,6 +30,7 @@ namespace Discord_Bot_Dusk
                     new SlashCommandBuilder()
                         .WithName("make-sandwich")
                         .WithDescription("Get a random sandwich suggestion"),
+
                     new SlashCommandBuilder()
                         .WithName("current-day")
                         .WithDescription("Get the current day")
@@ -54,6 +55,7 @@ namespace Discord_Bot_Dusk
                         .AddOption("date", ApplicationCommandOptionType.String, "The date to set the reminder for", isRequired: true)
                         .AddOption("message", ApplicationCommandOptionType.String, "The message to remind you with", isRequired: true)
                         .AddOption("timezones", ApplicationCommandOptionType.String, "The timezone to check", isRequired: false),
+
                     new SlashCommandBuilder()
                         .WithName("delete-command")
                         .WithDescription("Delete a command from the bot")
@@ -61,7 +63,7 @@ namespace Discord_Bot_Dusk
                 };
 
                 foreach (var cmd in commands)
-                {
+                { 
                     await guild.CreateApplicationCommandAsync(cmd.Build());
                 }
             }
