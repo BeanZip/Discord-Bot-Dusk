@@ -109,13 +109,20 @@ namespace Discord_Bot_Dusk
                 case "hello-son":
                     try
                     {
-                        if (devId != null && ulong.Parse(devId) == command.User.Id)
+                        switch (true)
                         {
-                            await command.RespondAsync("Hello Father! Thank you for creating me.");
-                        }
-                        else
-                        {
-                            await command.RespondAsync("I'm sorry, I can only respond to my father.");
+                            case bool _ when devId != null && ulong.Parse(devId) == command.User.Id:
+                                await command.RespondAsync("Hello Father! Thank you for creating me.");
+                                break;
+                            case bool _ when devId != null && ulong.Parse(devId) != command.User.Id:
+                                await command.RespondAsync("I'm sorry, I can only respond to my father.");
+                                break;
+                            case bool _ when devId == null:
+                                await command.RespondAsync("Father ID not found. Please set the Father ID in the environment variables.");
+                                if(ulong.TryParse(Environment.GetEnvironmentVariable("FatherId"), out ulong parsedId) && parsedId == command.User.Id){
+                                    await command.FollowupAsync($"Father ID has been set to {parsedId}.");
+                                }
+                                break;
                         }
                     }
                     catch (Exception ex)
