@@ -47,11 +47,12 @@ namespace Discord_Bot_Dusk
                     
                     string formattedTime = TimeZone switch
                     {
-                        TimeZones.EST => currentTime.AddHours(-5).ToString("hh:mm tt"),
-                        TimeZones.PST => currentTime.AddHours(-8).ToString("hh:mm tt"),
-                        TimeZones.MT => currentTime.AddHours(-7).ToString("hh:mm tt"),
-                        TimeZones.AKST => currentTime.AddHours(-9).ToString("hh:mm tt"), 
                         TimeZones.HST => currentTime.AddHours(-10).ToString("hh:mm tt"),
+                        TimeZones.AKST => currentTime.AddHours(-9).ToString("hh:mm tt"),
+                        TimeZones.PST => currentTime.AddHours(-8).ToString("hh:mm tt"),
+                        TimeZones.MST => currentTime.AddHours(-7).ToString("hh:mm tt"),
+                        TimeZones.CST => currentTime.AddHours(-6).ToString("hh:mm tt"),
+                        TimeZones.EST => currentTime.AddHours(-5).ToString("hh:mm tt"),
                         _ => currentTime.ToString("hh:mm tt") // Default case (use UTC)
                     };
 
@@ -93,8 +94,8 @@ namespace Discord_Bot_Dusk
                     {
                         TimeZones.EST => TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time"),
                         TimeZones.PST => TimeZoneInfo.FindSystemTimeZoneById("Pacific Standard Time"),
-                        TimeZones.CT => TimeZoneInfo.FindSystemTimeZoneById("Central Standard Time"),
-                        TimeZones.MT => TimeZoneInfo.FindSystemTimeZoneById("Mountain Standard Time"),
+                        TimeZones.CST => TimeZoneInfo.FindSystemTimeZoneById("Central Standard Time"),
+                        TimeZones.MST => TimeZoneInfo.FindSystemTimeZoneById("Mountain Standard Time"),
                         TimeZones.AKST => TimeZoneInfo.FindSystemTimeZoneById("Alaskan Standard Time"),
                         TimeZones.HST => TimeZoneInfo.FindSystemTimeZoneById("Hawaiian Standard Time"),
                         _ => TimeZoneInfo.Local // Default case (use local timezone)
@@ -187,12 +188,20 @@ namespace Discord_Bot_Dusk
                         }
 
                         DateTime date = DateTime.Parse(dateStr);
-                        TimeZoneInfo timeZone2 = timeZoneStr switch
+                        // Parse the timezone string to enum
+                        if (!Enum.TryParse(timeZoneStr, out TimeZones parsedTimezone))
                         {
-                            "EST" => TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time"),
-                            "PST" => TimeZoneInfo.FindSystemTimeZoneById("Pacific Standard Time"),
-                            "CT" => TimeZoneInfo.FindSystemTimeZoneById("Central Standard Time"),
-                            "MT" => TimeZoneInfo.FindSystemTimeZoneById("Mountain Standard Time"),
+                            parsedTimezone = TimeZones.EST; // Default to EST if parsing fails
+                        }
+
+                        TimeZoneInfo timeZone2 = parsedTimezone switch
+                        {
+                            TimeZones.EST => TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time"),
+                            TimeZones.PST => TimeZoneInfo.FindSystemTimeZoneById("Pacific Standard Time"),
+                            TimeZones.CST => TimeZoneInfo.FindSystemTimeZoneById("Central Standard Time"),
+                            TimeZones.MST => TimeZoneInfo.FindSystemTimeZoneById("Mountain Standard Time"),
+                            TimeZones.AKST => TimeZoneInfo.FindSystemTimeZoneById("Alaskan Standard Time"),
+                            TimeZones.HST => TimeZoneInfo.FindSystemTimeZoneById("Hawaiian Standard Time"),
                             _ => TimeZoneInfo.Local // Default case (use local timezone)
                         };
 

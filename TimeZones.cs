@@ -1,8 +1,8 @@
 public enum TimeZones{
     UTC,
     EST,
-    CT,
-    MT,
+    CST,
+    MST,
     PST,
     AKST,
     HST
