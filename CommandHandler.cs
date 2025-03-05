@@ -5,17 +5,29 @@ using System.Threading.Tasks;
 
 namespace Discord_Bot_Dusk
 {
+    /// <summary>
+    /// Commands Functionality Occurs Here.
+    /// </summary>
     public class CommandHandler
     {
         private static readonly string[] _timeZones = { "EST", "PST", "CT", "MT" };
         private static readonly string? devId = Environment.GetEnvironmentVariable("FatherId");
         private static DiscordSocketClient? _client;
-
+        
+        /// <summary>
+        /// Initialize the Command Handler
+        /// </summary>
+        /// <param name="client"></param>
         public static void Initialize(DiscordSocketClient client)
         {
             _client = client;
         }
-
+        
+        /// <summary>
+        /// This method handles the command that was sent by the user. Aka The Place where functionality of the commands are implemented.
+        /// </summary>
+        /// <param name="command"></param>
+        /// <returns></returns>
         public static async Task HandleCommand(SocketSlashCommand command)
         {
             switch (command.Data.Name)

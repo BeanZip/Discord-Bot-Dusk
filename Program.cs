@@ -29,8 +29,7 @@ public class Program
         return Task.CompletedTask;
     }
 
-    // Create Commands Here
-    public static async Task Client_Ready()
+        public static async Task Client_Ready()
     {
         if(_client == null)
         {

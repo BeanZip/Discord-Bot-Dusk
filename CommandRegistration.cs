@@ -6,8 +6,16 @@ using System.Threading.Tasks;
 
 namespace Discord_Bot_Dusk
 {
+    /// <summary>
+    /// Register the commands for the bot to use
+    /// </summary>
     public class CommandRegistration
     {
+        /// <summary>
+        /// Register the commands for a specific guild
+        /// </summary>
+        /// <param name="guild"></param>
+        /// <returns></returns>
         public static async Task RegisterCommandsForGuild(SocketGuild guild)
         {
             try
