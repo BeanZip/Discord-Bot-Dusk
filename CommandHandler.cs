@@ -206,7 +206,7 @@ namespace Discord_Bot_Dusk
                     return;
                 
                 case "delete-command":
-                    if (devId != null && command.User.Id == ulong.Parse(devId) || command.User.GlobalName == "Ichiban")
+                    if (devId != null && command.User.Id == ulong.Parse(devId))
                     {
                         var optionCommand = command.Data.Options.FirstOrDefault(o => o.Name == "command");
                         if (optionCommand?.Value == null)
@@ -243,7 +243,7 @@ namespace Discord_Bot_Dusk
                     }
                     else
                     {
-                        await command.RespondAsync("You are not authorized to do that!");
+                        await command.RespondAsync("You are not authorized to do that!", ephemeral: true);
                         if(devId == null)
                         {
                             await command.FollowupAsync("Father ID not found. Please set the Father ID in the environment variables.", ephemeral: true);
