@@ -1,19 +1,45 @@
-# Welcome to DuskBot
+# Welcome to Dusk-Bot
 
-# Summary
+## Summary
 
-In Short all it does it checks for current Time and/or Date in different TimeZones
+This is a discord bot coded in C# using [Discord.Net](https://docs.discordnet.dev/index.html). All it does is tracks the time for you and other miscellaneous stuff.
 
-If your interesting in helping submit a PR
+If you're interested in helping, please submit a PR.
 
+## Commands
 
-# Commands:
+### /current-time {timezone}
 
-## /current-time {timezone}
-Checks for Time in TimeZone
+Displays the current time in the specified timezone.
 
-## /current-day {timezone}
-Checks for Day in TimeZone
+- Example: `/current-time UTC`
 
-## /make-sandwich
-The bot feel's nice enough to make you a sandwich but won't ask you for what type of sandwich.
+### /current-day {timezone}
+
+Shows the current day of the week in the specified timezone.
+
+- Example: `/current-day PST`
+
+### /make-sandwich
+
+The bot makes you a randomly selected sandwich. No options for customization available yet.
+
+### /set-timer {milliseconds}
+
+Sets a timer for the specified number of milliseconds and notifies you when it completes.
+
+- Example: `/set-timer 60000` (for 1 minute)
+
+### /set-reminder {date} {message}
+
+Sets a reminder for a specific date and time with a custom message.
+
+- Example: `/set-reminder 2023-12-25T12:00:00 Open Christmas presents!`
+
+### /Boom
+
+Generates a random explosion effect. Use with caution!
+
+## Other Features are WIP
+
+More commands and functionalities are currently being developed.
