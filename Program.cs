@@ -28,7 +28,6 @@ public class Program
         Console.WriteLine(msg.ToString());
         return Task.CompletedTask;
     }
-
         public static async Task Client_Ready()
     {
         if(_client == null)
