@@ -1,3 +1,5 @@
+namespace Discord_Bot_Dusk;
+
 public enum TimeZones{
     UTC,
     EST,
