@@ -59,7 +59,11 @@ namespace Discord_Bot_Dusk
                     new SlashCommandBuilder()
                         .WithName("delete-command")
                         .WithDescription("Delete a command from the bot")
-                        .AddOption("command", ApplicationCommandOptionType.String, "The command to delete", isRequired: true)                        
+                        .AddOption("command", ApplicationCommandOptionType.String, "The command to delete", isRequired: true),
+                    new SlashCommandBuilder()
+                        .WithName("roulette") 
+                        .WithDescription("Play a game of Russian Roulette")
+                        .AddOption("bullets", ApplicationCommandOptionType.Integer, "The number of bullets to load", isRequired: true),                       
                 };
 
                 foreach (var cmd in commands)

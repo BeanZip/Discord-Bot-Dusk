@@ -258,15 +258,47 @@ namespace Discord_Bot_Dusk
                         await commandToDelete.DeleteAsync();
                         await command.RespondAsync($"Command {commandName} has been deleted.");
                     }
-                    else
-                    {
-                        await command.RespondAsync("You are not authorized to do that!", ephemeral: true);
-                        if(devId == null)
+                        else
                         {
-                            await command.FollowupAsync("Father ID not found. Please set the Father ID in the environment variables.", ephemeral: true);
-                            if(ulong.TryParse(Environment.GetEnvironmentVariable("FatherId"), out ulong parsedId) && parsedId == command.User.Id){
-                                await command.FollowupAsync($"Father ID has been set to {parsedId}.", ephemeral: true);
+                            await command.RespondAsync("You are not authorized to do that!", ephemeral: true);
+                            if(devId == null)
+                            {
+                                await command.FollowupAsync("Father ID not found. Please set the Father ID in the environment variables.", ephemeral: true);
+                                if(ulong.TryParse(Environment.GetEnvironmentVariable("FatherId"), out ulong parsedId) && parsedId == command.User.Id){
+                                    await command.FollowupAsync($"Father ID has been set to {parsedId}.", ephemeral: true);
+                                }
                             }
+                        }
+                        return;
+                    case "roulette":
+                    var optionBullets = command.Data.Options.FirstOrDefault(o => o.Name == "bullets");
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+                    string? bulletsStr = optionBullets.Value.ToString();
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
+
+                    if (optionBullets?.Value == null || string.IsNullOrEmpty(bulletsStr))
+                    {
+                        await command.RespondAsync("Please provide the number of bullets to load.");
+                        return;
+                    } else{
+                        int bullets = int.Parse(bulletsStr);
+                        if (bullets < 1 || bullets > 6)
+                        {
+                            await command.RespondAsync("Please provide a number of bullets between 1 and 6.");
+                            return;
+                        }
+
+                        Random rand = new Random();
+                        int chamber = rand.Next(1, 12);
+                        if (chamber <= bullets)
+                        {
+                            await command.RespondAsync("Click... 💥");
+                            await command.FollowupAsync($"{command.User.Mention} has been shot dead.");
+                        }
+                        else
+                        {
+                            await command.RespondAsync("Click... 💥");
+                            await command.FollowupAsync($"{command.User.Mention} has survived.");
                         }
                     }
                     return;
