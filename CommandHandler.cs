@@ -86,7 +86,7 @@ namespace Discord_Bot_Dusk
                     DateTime utcNow = DateTime.UtcNow;
                     if (!Enum.TryParse(userTimeZone2, out TimeZones timezone))
                     {
-                        await command.RespondAsync("Invalid Time Zone. Please use: EST, PST, CT, or MT");
+                        await command.RespondAsync("Other TimeZones are WIP. Please use US-Based TimeZones (EST, CST, MST, PST, AKST, HST.)", ephemeral: true);
                         return;
                     }
                     
@@ -109,20 +109,13 @@ namespace Discord_Bot_Dusk
                 case "hello-son":
                     try
                     {
-                        switch (true)
+                       if(devId != null && ulong.Parse(devId) == command.User.Id)
                         {
-                            case bool _ when devId != null && ulong.Parse(devId) == command.User.Id:
-                                await command.RespondAsync("Hello Father! Thank you for creating me.");
-                                break;
-                            case bool _ when devId != null && ulong.Parse(devId) != command.User.Id:
-                                await command.RespondAsync("I'm sorry, I can only respond to my father.");
-                                break;
-                            case bool _ when devId == null:
-                                await command.RespondAsync("Father ID not found. Please set the Father ID in the environment variables.");
-                                if(ulong.TryParse(Environment.GetEnvironmentVariable("FatherId"), out ulong parsedId) && parsedId == command.User.Id){
-                                    await command.FollowupAsync($"Father ID has been set to {parsedId}.");
-                                }
-                                break;
+                            await command.RespondAsync("Greetings, how may I assist you father?");
+                        }
+                        else
+                        {
+                            await command.RespondAsync($"Access Denied!");
                         }
                     }
                     catch (Exception ex)
@@ -223,54 +216,38 @@ namespace Discord_Bot_Dusk
                     return;
                 
                 case "delete-command":
-                    if (devId != null && command.User.Id == ulong.Parse(devId))
+                    var optionDelete = command.Data.Options.FirstOrDefault(o => o.Name == "message-id");
+                    if (optionDelete?.Value == null)
+                        return;
+                    string? messageId = optionDelete.Value.ToString();
+                    if (string.IsNullOrEmpty(messageId))
+                        return;
+
+                        if(devId == null){
+                            await command.RespondAsync("Developer ID not found.");
+                            return;
+                        }
+                    
+                    if(command.User.Id == ulong.Parse(devId) && !command.User.IsBot)
                     {
-                        var optionCommand = command.Data.Options.FirstOrDefault(o => o.Name == "command");
-                        if (optionCommand?.Value == null)
+                        var message = await command.Channel.GetMessageAsync(ulong.Parse(messageId));
+                        if (message != null)
                         {
-                            await command.RespondAsync("Please provide a valid command to delete.");
-                            return;
+                            await message.DeleteAsync();
+                            await command.RespondAsync("Message deleted successfully.");
                         }
-
-                        string? commandName = optionCommand.Value.ToString();
-                        if (string.IsNullOrEmpty(commandName))
-                        {
-                            await command.RespondAsync("Please provide a valid command to delete.");
-                            return;
-                        }
-                        else if (!command.GuildId.HasValue)
-                        {
-                            await command.RespondAsync("This command can only be used in a server.");
-                            return;
-                        }
-                        if(_client == null){
-                            Console.WriteLine("Client not found");
-                            return;
-                        }
-
-                        var commandToDelete = await _client.GetGlobalApplicationCommandAsync(command.GuildId.Value);
-                        if (commandToDelete == null)
-                        {
-                            await command.RespondAsync("Command not found.");
-                            return;
-                        }
-
-                        await commandToDelete.DeleteAsync();
-                        await command.RespondAsync($"Command {commandName} has been deleted.");
-                    }
                         else
                         {
-                            await command.RespondAsync("You are not authorized to do that!", ephemeral: true);
-                            if(devId == null)
-                            {
-                                await command.FollowupAsync("Father ID not found. Please set the Father ID in the environment variables.", ephemeral: true);
-                                if(ulong.TryParse(Environment.GetEnvironmentVariable("FatherId"), out ulong parsedId) && parsedId == command.User.Id){
-                                    await command.FollowupAsync($"Father ID has been set to {parsedId}.", ephemeral: true);
-                                }
-                            }
+                            await command.RespondAsync("Message not found.");
                         }
-                        return;
-                    case "roulette":
+                    }
+                    else
+                    {
+                        await command.RespondAsync("You do not have permission to delete messages.");
+                    }
+                    
+                    return;
+                case "roulette":
                     var optionBullets = command.Data.Options.FirstOrDefault(o => o.Name == "bullets");
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
                     string? bulletsStr = optionBullets.Value.ToString();
