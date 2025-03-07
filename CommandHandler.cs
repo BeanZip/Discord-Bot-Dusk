@@ -66,7 +66,8 @@ namespace Discord_Bot_Dusk
                             {8, "Grilled Cheese"}, {9, "PB&J"}, {10, "Egg Salad"}, 
                             {11, "Roast Beef"}, {12, "Italian"}, {13, "Veggie"}, 
                             {14, "Reuben"}, {15, "French Dip"}, {16, "Meatball"}, 
-                            {17, "Pulled Pork"}, {18, "Cuban"}, {19, "Caprese"}, {20, "Philly Cheesesteak"}
+                            {17, "Pulled Pork"}, {18, "Cuban"}, {19, "Caprese"}, 
+                            {20, "Philly Cheesesteak"}
                         };
                                 Random random = new Random(); 
                                 int randomIndex = random.Next(sandwiches.Count);
@@ -276,6 +277,53 @@ namespace Discord_Bot_Dusk
                         {
                             await command.RespondAsync("Click... 💥");
                             await command.FollowupAsync($"{command.User.Mention} has survived.");
+                        }
+                    }
+                    return;
+                case "math":
+                    var optionOperation = command.Data.Options.FirstOrDefault(o => o.Name == "operation");
+                    var optionNum1 = command.Data.Options.FirstOrDefault(o => o.Name == "num1");
+                    var optionNum2 = command.Data.Options.FirstOrDefault(o => o.Name == "num2");
+
+                    if(optionOperation?.Value == null || optionNum1?.Value == null || optionNum2?.Value == null)
+                    {
+                        await command.RespondAsync("Please provide a valid operation and two numbers to perform the operation on.");
+                        return;
+                    } else{
+                        string? operation = optionOperation.Value.ToString();
+                        string? num1Str = optionNum1.Value.ToString();
+                        string? num2Str = optionNum2.Value.ToString();
+
+                        if (string.IsNullOrEmpty(operation) || string.IsNullOrEmpty(num1Str) || string.IsNullOrEmpty(num2Str))
+                        {
+                            await command.RespondAsync("Please provide a valid operation and two numbers to perform the operation on.");
+                            return;
+                        }
+
+                        double num1 = double.Parse(num1Str);
+                        double num2 = double.Parse(num2Str);
+                        double result = operation.ToLower() switch
+                        {
+                            "add" => Math.Calculate(num1, num2, Math.Operations.Add),
+                            "subtract" => Math.Calculate(num1, num2, Math.Operations.Subtract),
+                            "multiply" => Math.Calculate(num1, num2, Math.Operations.Multiply),
+                            "divide" => TryDivide(num1, num2),
+                            _ => double.NaN // Default case for unknown operations
+                        };
+
+                        double TryDivide(double a, double b)
+                        {
+                            try { return Math.Calculate(a, b, Math.Operations.Divide); } 
+                            catch(DivideByZeroException) { return double.NaN; }
+                        }
+
+                        if (double.IsNaN(result))
+                        {
+                            await command.RespondAsync("Invalid operation or division by zero.");
+                        }
+                        else
+                        {
+                            await command.RespondAsync($"Result: {result}");
                         }
                     }
                     return;

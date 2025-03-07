@@ -63,7 +63,12 @@ namespace Discord_Bot_Dusk
                     new SlashCommandBuilder()
                         .WithName("roulette") 
                         .WithDescription("Play a game of Russian Roulette")
-                        .AddOption("bullets", ApplicationCommandOptionType.Integer, "The number of bullets to load", isRequired: true),                       
+                        .AddOption("bullets", ApplicationCommandOptionType.Integer, "The number of bullets to load", isRequired: true),
+                    new SlashCommandBuilder().WithName("math")
+                        .WithDescription("Perform a math operation")
+                        .AddOption("operation", ApplicationCommandOptionType.String, "The operation to perform", isRequired: true)
+                        .AddOption("num1", ApplicationCommandOptionType.Integer, "The first number", isRequired: true)
+                        .AddOption("num2", ApplicationCommandOptionType.Integer, "The second number", isRequired: true),
                 };
 
                 foreach (var cmd in commands)
