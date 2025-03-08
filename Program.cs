@@ -34,7 +34,21 @@ public class Program
         {
             return;
         }
+        string formattedTime = DateTime.UtcNow.ToString("HH:mm");
+        // Set initial status
         await _client.SetCustomStatusAsync("Checking the Time :3...");
+        
+        // Create a timer that updates the status every minute
+        var timer = new System.Timers.Timer(60000); // 60000 ms = 1 minute
+        timer.Elapsed += async (sender, e) => {
+            try {
+            await _client.SetActivityAsync(new Game($"{formattedTime} in UTC", ActivityType.Listening));
+            } catch (Exception ex) {
+            Console.WriteLine($"Error updating status: {ex.Message}");
+            }
+        };
+        timer.AutoReset = true;
+        timer.Enabled = true;
         await _client.SetActivityAsync(new Game($"{DateTime.UtcNow} in UTC", ActivityType.Listening));
         foreach (var guild in _client.Guilds)
         {
