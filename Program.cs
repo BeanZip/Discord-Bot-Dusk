@@ -42,7 +42,8 @@ public class Program
         var timer = new System.Timers.Timer(60000); // 60000 ms = 1 minute
         timer.Elapsed += async (sender, e) => {
             try {
-            await _client.SetActivityAsync(new Game($"{formattedTime} in UTC", ActivityType.Listening));
+            formattedTime = DateTime.UtcNow.ToString("h:mm tt"); // 12-hour format with AM/PM
+            await _client.SetActivityAsync(new Game($"It is now {formattedTime} in UTC", ActivityType.Listening));
             } catch (Exception ex) {
             Console.WriteLine($"Error updating status: {ex.Message}");
             }
