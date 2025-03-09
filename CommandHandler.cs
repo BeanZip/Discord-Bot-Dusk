@@ -47,12 +47,18 @@ namespace Discord_Bot_Dusk
                     
                     string formattedTime = TimeZone switch
                     {
-                        TimeZones.HST => currentTime.AddHours(-10).ToString("hh:mm tt"),
-                        TimeZones.AKST => currentTime.AddHours(-9).ToString("hh:mm tt"),
-                        TimeZones.PST => currentTime.AddHours(-8).ToString("hh:mm tt"),
-                        TimeZones.MST => currentTime.AddHours(-7).ToString("hh:mm tt"),
-                        TimeZones.CST => currentTime.AddHours(-6).ToString("hh:mm tt"),
-                        TimeZones.EST => currentTime.AddHours(-5).ToString("hh:mm tt"),
+                        TimeZones.HST => TimeZoneInfo.ConvertTimeFromUtc(currentTime, 
+                            TimeZoneInfo.FindSystemTimeZoneById("Hawaiian Standard Time")).ToString("hh:mm tt"),
+                        TimeZones.AKST => TimeZoneInfo.ConvertTimeFromUtc(currentTime, 
+                            TimeZoneInfo.FindSystemTimeZoneById("Alaskan Standard Time")).ToString("hh:mm tt"),
+                        TimeZones.PST => TimeZoneInfo.ConvertTimeFromUtc(currentTime, 
+                            TimeZoneInfo.FindSystemTimeZoneById("Pacific Standard Time")).ToString("hh:mm tt"),
+                        TimeZones.MST => TimeZoneInfo.ConvertTimeFromUtc(currentTime, 
+                            TimeZoneInfo.FindSystemTimeZoneById("Mountain Standard Time")).ToString("hh:mm tt"),
+                        TimeZones.CST => TimeZoneInfo.ConvertTimeFromUtc(currentTime, 
+                            TimeZoneInfo.FindSystemTimeZoneById("Central Standard Time")).ToString("hh:mm tt"),
+                        TimeZones.EST => TimeZoneInfo.ConvertTimeFromUtc(currentTime, 
+                            TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time")).ToString("hh:mm tt"),
                         _ => currentTime.ToString("hh:mm tt") // Default case (use UTC)
                     };
 
@@ -67,7 +73,7 @@ namespace Discord_Bot_Dusk
                             {11, "Roast Beef"}, {12, "Italian"}, {13, "Veggie"}, 
                             {14, "Reuben"}, {15, "French Dip"}, {16, "Meatball"}, 
                             {17, "Pulled Pork"}, {18, "Cuban"}, {19, "Caprese"}, 
-                            {20, "Philly Cheesesteak"}
+                            {20, "Philly Cheesesteak"},{21, "Monte Cristo"}, {22, "Croque Monsieur"}
                         };
                                 Random random = new Random(); 
                                 int randomIndex = random.Next(sandwiches.Count);
