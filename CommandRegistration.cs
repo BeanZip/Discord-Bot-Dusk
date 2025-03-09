@@ -60,10 +60,12 @@ namespace Discord_Bot_Dusk
                         .WithName("delete-command")
                         .WithDescription("Delete a command from the bot")
                         .AddOption("command", ApplicationCommandOptionType.String, "The command to delete", isRequired: true),
+
                     new SlashCommandBuilder()
                         .WithName("roulette") 
                         .WithDescription("Play a game of Russian Roulette")
                         .AddOption("bullets", ApplicationCommandOptionType.Integer, "The number of bullets to load", isRequired: true),
+                        
                     new SlashCommandBuilder().WithName("math")
                         .WithDescription("Perform a math operation")
                         .AddOption("operation", ApplicationCommandOptionType.String, "The operation to perform", isRequired: true)

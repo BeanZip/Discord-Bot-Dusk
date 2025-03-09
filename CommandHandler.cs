@@ -267,11 +267,14 @@ namespace Discord_Bot_Dusk
                         }
 
                         Random rand = new Random();
-                        int chamber = rand.Next(1, 12);
+                        var minRange = 1; 
+                        var maxRange = 6; // Change to 6 to represent a standard revolver
+                        int chamber = rand.Next(minRange, maxRange + 1); // +1 because Next is exclusive on upper bound
                         if (chamber <= bullets)
                         {
                             await command.RespondAsync("Click... 💥");
                             await command.FollowupAsync($"{command.User.Mention} has been shot dead.");
+                            await Task.Delay(300);
                         }
                         else
                         {
