@@ -1,4 +1,5 @@
 using Discord.WebSocket;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -334,6 +335,33 @@ namespace Discord_Bot_Dusk
                         {
                             await command.RespondAsync($"Result: {result}");
                         }
+                    }
+                    return;
+                case "joke":
+                    string url = "https://sv443.net/jokeapi/v2/joke/Any";
+                    using(HttpClient client = new HttpClient())
+                    {
+                        try{
+                            string json = await client.GetStringAsync(url);
+                            JObject joke = JObject.Parse(json);
+                            
+                            if (joke["type"]?.ToString() == "twopart")
+                            {
+                                string setup = joke["setup"]?.ToString() ?? "No setup available";
+                                string delivery = joke["delivery"]?.ToString() ?? "No delivery available";
+                                string jokeText = setup + "\n" + delivery;
+                                await command.RespondAsync(jokeText);
+                            }
+                            else // Handle single part jokes
+                            {
+                                string jokeText = joke["joke"]?.ToString() ?? "No joke available";
+                                await command.RespondAsync(jokeText);
+                            }
+                        } catch(Exception ex)
+                        {
+                            Console.WriteLine($"Error in joke command: {ex.Message}");
+                            await command.RespondAsync("An error occurred while fetching the joke.");
+                    }
                     }
                     return;
         }
