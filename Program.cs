@@ -50,6 +50,10 @@ public class Program
         };
         timer.AutoReset = true;
         timer.Enabled = true;
+        
+        // Check if daylight saving time is in effect
+        bool isDST = TimeZoneInfo.Local.IsDaylightSavingTime(DateTime.Now);
+        string dstStatus = isDST ? "(DST Active)" : "(Standard Time)";
         await _client.SetActivityAsync(new Game($"{DateTime.UtcNow} in UTC", ActivityType.Listening));
         foreach (var guild in _client.Guilds)
         {
