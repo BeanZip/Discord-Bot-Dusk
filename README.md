@@ -40,6 +40,26 @@ Sets a reminder for a specific date and time with a custom message.
 
 Generates a random explosion effect. Use with caution!
 
+### /math {operation} {first number} {second number}
+
+Calculates the result of a mathematical expression.
+
+- Example: `/math add 2 4`
+
+### /roulette
+
+Play a game of Russian Roulette. The bot randomly decides if you win or lose.
+
+- Example: `/roulette` (Good luck!)
+
 ## Other Features are WIP
 
 More commands and functionalities are currently being developed.
+
+(If you want to help me on a feature please feel free to add)
+
+## Support Development
+
+If you find this bot useful, consider supporting development:
+
+[![Ko-fi](https://img.shields.io/badge/Buy_Me_A_Coffee-Ko--fi-FF5E5B?style=for-the-badge&logo=ko-fi)](https://ko-fi.com/Z8Z0YFSGX)
