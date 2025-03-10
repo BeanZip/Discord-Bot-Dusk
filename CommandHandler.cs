@@ -327,14 +327,8 @@ namespace Discord_Bot_Dusk
                             catch(DivideByZeroException) { return double.NaN; }
                         }
 
-                        if (double.IsNaN(result))
-                        {
-                            await command.RespondAsync("Invalid operation or division by zero.");
-                        }
-                        else
-                        {
-                            await command.RespondAsync($"Result: {result}");
-                        }
+                       string resultStr = double.IsNaN(result) ? "Cannot divide by zero." : result.ToString();
+                        await command.RespondAsync($"{command.User.Mention} The result is {resultStr}");
                     }
                     return;
                 case "joke":
