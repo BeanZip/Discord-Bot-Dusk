@@ -52,6 +52,10 @@ Play a game of Russian Roulette. The bot randomly decides if you win or lose.
 
 - Example: `/roulette` (Good luck!)
 
+## /joke
+
+Sends a random ass Joke (**WARNING: COULD BE NSFW OR RACIST OR ANYTHING LISTEN BRO I GOT THIS OFF SOME RANDOM API**)
+
 ## Other Features are WIP
 
 More commands and functionalities are currently being developed.
