@@ -14,7 +14,7 @@ namespace Discord_Bot_Dusk
         private static TimeZones TimeZone;
         private static readonly string? devId = Environment.GetEnvironmentVariable("FatherId");
         private static DiscordSocketClient? _client;
-        
+
         /// <summary>
         /// Initialize the Command Handler
         /// </summary>
@@ -23,7 +23,7 @@ namespace Discord_Bot_Dusk
         {
             _client = client;
         }
-        
+
         /// <summary>
         /// This method handles the command that was sent by the user. Aka The Place where functionality of the commands are implemented.
         /// </summary>
@@ -45,20 +45,20 @@ namespace Discord_Bot_Dusk
                     DateTime currentTime = DateTime.UtcNow;
                     // Convert using enum instead of string comparison
                     TimeZone = Enum.Parse<TimeZones>(userTimeZone);
-                    
+
                     string formattedTime = TimeZone switch
                     {
-                        TimeZones.HST => TimeZoneInfo.ConvertTimeFromUtc(currentTime, 
+                        TimeZones.HST => TimeZoneInfo.ConvertTimeFromUtc(currentTime,
                             TimeZoneInfo.FindSystemTimeZoneById("Hawaiian Standard Time")).ToString("hh:mm tt"),
-                        TimeZones.AKST => TimeZoneInfo.ConvertTimeFromUtc(currentTime, 
+                        TimeZones.AKST => TimeZoneInfo.ConvertTimeFromUtc(currentTime,
                             TimeZoneInfo.FindSystemTimeZoneById("Alaskan Standard Time")).ToString("hh:mm tt"),
-                        TimeZones.PST => TimeZoneInfo.ConvertTimeFromUtc(currentTime, 
+                        TimeZones.PST => TimeZoneInfo.ConvertTimeFromUtc(currentTime,
                             TimeZoneInfo.FindSystemTimeZoneById("Pacific Standard Time")).ToString("hh:mm tt"),
-                        TimeZones.MST => TimeZoneInfo.ConvertTimeFromUtc(currentTime, 
+                        TimeZones.MST => TimeZoneInfo.ConvertTimeFromUtc(currentTime,
                             TimeZoneInfo.FindSystemTimeZoneById("Mountain Standard Time")).ToString("hh:mm tt"),
-                        TimeZones.CST => TimeZoneInfo.ConvertTimeFromUtc(currentTime, 
+                        TimeZones.CST => TimeZoneInfo.ConvertTimeFromUtc(currentTime,
                             TimeZoneInfo.FindSystemTimeZoneById("Central Standard Time")).ToString("hh:mm tt"),
-                        TimeZones.EST => TimeZoneInfo.ConvertTimeFromUtc(currentTime, 
+                        TimeZones.EST => TimeZoneInfo.ConvertTimeFromUtc(currentTime,
                             TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time")).ToString("hh:mm tt"),
                         _ => currentTime.ToString("hh:mm tt") // Default case (use UTC)
                     };
@@ -66,21 +66,21 @@ namespace Discord_Bot_Dusk
                     await command.RespondAsync($"Currently it is {formattedTime} in {userTimeZone} {command.User.Mention}"); // Only returns the time
                     return;
                 case "make-sandwich":
-                        Dictionary<int, string> sandwiches = new()
+                    Dictionary<int, string> sandwiches = new()
                         {
-                            {0, "Tuna"}, {1, "Chicken"}, {2, "Turkey"}, {3, "Beef"}, 
-                            {4, "Ham"}, {5, "Pastrami"}, {6, "BLT"}, {7, "Club"}, 
-                            {8, "Grilled Cheese"}, {9, "PB&J"}, {10, "Egg Salad"}, 
-                            {11, "Roast Beef"}, {12, "Italian"}, {13, "Veggie"}, 
-                            {14, "Reuben"}, {15, "French Dip"}, {16, "Meatball"}, 
-                            {17, "Pulled Pork"}, {18, "Cuban"}, {19, "Caprese"}, 
+                            {0, "Tuna"}, {1, "Chicken"}, {2, "Turkey"}, {3, "Beef"},
+                            {4, "Ham"}, {5, "Pastrami"}, {6, "BLT"}, {7, "Club"},
+                            {8, "Grilled Cheese"}, {9, "PB&J"}, {10, "Egg Salad"},
+                            {11, "Roast Beef"}, {12, "Italian"}, {13, "Veggie"},
+                            {14, "Reuben"}, {15, "French Dip"}, {16, "Meatball"},
+                            {17, "Pulled Pork"}, {18, "Cuban"}, {19, "Caprese"},
                             {20, "Philly Cheesesteak"},{21, "Monte Cristo"}, {22, "Croque Monsieur"}
                         };
-                                Random random = new Random(); 
-                                int randomIndex = random.Next(sandwiches.Count);
-                                string responseMessage = sandwiches[randomIndex];
-                                await command.RespondAsync($"{command.User.Mention} Here is your {responseMessage} sandwich.");
-                                break;
+                    Random random = new Random();
+                    int randomIndex = random.Next(sandwiches.Count);
+                    string responseMessage = sandwiches[randomIndex];
+                    await command.RespondAsync($"{command.User.Mention} Here is your {responseMessage} sandwich.");
+                    break;
                 case "current-day":
                     var optionMore = command.Data.Options.FirstOrDefault(o => o.Name == "timezones");
                     string? userTimeZone2 = optionMore?.Value?.ToString()?.ToUpper();
@@ -97,7 +97,7 @@ namespace Discord_Bot_Dusk
                         await command.RespondAsync("Other TimeZones are WIP. Please use US-Based TimeZones (EST, CST, MST, PST, AKST, HST.)", ephemeral: true);
                         return;
                     }
-                    
+
                     TimeZoneInfo timeZone = timezone switch
                     {
                         TimeZones.EST => TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time"),
@@ -117,7 +117,7 @@ namespace Discord_Bot_Dusk
                 case "hello-son":
                     try
                     {
-                       if(devId != null && ulong.Parse(devId) == command.User.Id)
+                        if (devId != null && ulong.Parse(devId) == command.User.Id)
                         {
                             await command.RespondAsync("Greetings, how may I assist you father?");
                         }
@@ -183,8 +183,10 @@ namespace Discord_Bot_Dusk
                     {
                         await command.RespondAsync("Please provide a valid date and message to set the reminder for.");
                         return;
-                    
-                    } else{
+
+                    }
+                    else
+                    {
                         string? dateStr = optionDate.Value.ToString();
                         string? message = optionMessage.Value.ToString();
                         string? timeZoneStr = optionTimeZone?.Value?.ToString()?.ToUpper();
@@ -222,7 +224,7 @@ namespace Discord_Bot_Dusk
                         await command.FollowupAsync($"{command.User.Mention} Reminder: {message}");
                     }
                     return;
-                
+
                 case "delete-command":
                     var optionDelete = command.Data.Options.FirstOrDefault(o => o.Name == "message-id");
                     if (optionDelete?.Value == null)
@@ -231,12 +233,13 @@ namespace Discord_Bot_Dusk
                     if (string.IsNullOrEmpty(messageId))
                         return;
 
-                        if(devId == null){
-                            await command.RespondAsync("Developer ID not found.");
-                            return;
-                        }
-                    
-                    if(command.User.Id == ulong.Parse(devId) && !command.User.IsBot)
+                    if (devId == null)
+                    {
+                        await command.RespondAsync("Developer ID not found.");
+                        return;
+                    }
+
+                    if (command.User.Id == ulong.Parse(devId) && !command.User.IsBot)
                     {
                         var message = await command.Channel.GetMessageAsync(ulong.Parse(messageId));
                         if (message != null)
@@ -253,7 +256,7 @@ namespace Discord_Bot_Dusk
                     {
                         await command.RespondAsync("You do not have permission to delete messages.");
                     }
-                    
+
                     return;
                 case "roulette":
                     var optionBullets = command.Data.Options.FirstOrDefault(o => o.Name == "bullets");
@@ -265,7 +268,9 @@ namespace Discord_Bot_Dusk
                     {
                         await command.RespondAsync("Please provide the number of bullets to load.");
                         return;
-                    } else{
+                    }
+                    else
+                    {
                         int bullets = int.Parse(bulletsStr);
                         if (bullets < 1 || bullets > 6)
                         {
@@ -274,7 +279,7 @@ namespace Discord_Bot_Dusk
                         }
 
                         Random rand = new Random();
-                        var minRange = 1; 
+                        var minRange = 1;
                         var maxRange = 6; // Change to 6 to represent a standard revolver
                         int chamber = rand.Next(minRange, maxRange + 1); // +1 because Next is exclusive on upper bound
                         if (chamber <= bullets)
@@ -295,11 +300,13 @@ namespace Discord_Bot_Dusk
                     var optionNum1 = command.Data.Options.FirstOrDefault(o => o.Name == "num1");
                     var optionNum2 = command.Data.Options.FirstOrDefault(o => o.Name == "num2");
 
-                    if(optionOperation?.Value == null || optionNum1?.Value == null || optionNum2?.Value == null)
+                    if (optionOperation?.Value == null || optionNum1?.Value == null || optionNum2?.Value == null)
                     {
                         await command.RespondAsync("Please provide a valid operation and two numbers to perform the operation on.");
                         return;
-                    } else{
+                    }
+                    else
+                    {
                         string? operation = optionOperation.Value.ToString();
                         string? num1Str = optionNum1.Value.ToString();
                         string? num2Str = optionNum2.Value.ToString();
@@ -323,22 +330,23 @@ namespace Discord_Bot_Dusk
 
                         double TryDivide(double a, double b)
                         {
-                            try { return Math.Calculate(a, b, Math.Operations.Divide); } 
-                            catch(DivideByZeroException) { return double.NaN; }
+                            try { return Math.Calculate(a, b, Math.Operations.Divide); }
+                            catch (DivideByZeroException) { return double.NaN; }
                         }
 
-                       string resultStr = double.IsNaN(result) ? "Cannot divide by zero." : result.ToString();
+                        string resultStr = double.IsNaN(result) ? "Cannot divide by zero." : result.ToString();
                         await command.RespondAsync($"{command.User.Mention} The result is {resultStr}");
                     }
                     return;
                 case "joke":
                     string url = "https://sv443.net/jokeapi/v2/joke/Any";
-                    using(HttpClient client = new HttpClient())
+                    using (HttpClient client = new HttpClient())
                     {
-                        try{
+                        try
+                        {
                             string json = await client.GetStringAsync(url);
                             JObject joke = JObject.Parse(json);
-                            
+
                             if (joke["type"]?.ToString() == "twopart")
                             {
                                 string setup = joke["setup"]?.ToString() ?? "No setup available";
@@ -351,14 +359,15 @@ namespace Discord_Bot_Dusk
                                 string jokeText = joke["joke"]?.ToString() ?? "No joke available";
                                 await command.RespondAsync(jokeText);
                             }
-                        } catch(Exception ex)
+                        }
+                        catch (Exception ex)
                         {
                             Console.WriteLine($"Error in joke command: {ex.Message}");
                             await command.RespondAsync("An error occurred while fetching the joke.");
-                    }
+                        }
                     }
                     return;
+            }
         }
     }
-  }
 }
