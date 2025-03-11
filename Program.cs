@@ -1,8 +1,5 @@
-﻿using System.Runtime.InteropServices;
-using Discord;
-using Discord.Net;
+﻿using Discord;
 using Discord.WebSocket;
-using Newtonsoft.Json;
 
 namespace Discord_Bot_Dusk;
 

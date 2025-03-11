@@ -1,8 +1,6 @@
 using Discord;
 using Discord.Net;
 using Discord.WebSocket;
-using System;
-using System.Threading.Tasks;
 
 namespace Discord_Bot_Dusk
 {
