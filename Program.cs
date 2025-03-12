@@ -31,15 +31,13 @@ public class Program
         {
             return;
         }
-        string formattedTime = DateTime.UtcNow.ToString("HH:mm");
-        // Set initial status
-        await _client.SetCustomStatusAsync("Checking the Time :3...");
         
         // Create a timer that updates the status every minute
         var timer = new System.Timers.Timer(60000); // 60000 ms = 1 minute
         timer.Elapsed += async (sender, e) => {
             try {
-            formattedTime = DateTime.UtcNow.ToString("h:mm tt"); // 12-hour format with AM/PM
+            bool IsDst = TimeZoneInfo.Local.IsDaylightSavingTime(DateTime.UtcNow);
+            string formattedTime = IsDst ? formattedTime = DateTime.UtcNow.ToString("h: mm tt") + DateTime.UtcNow.AddHours(1) : formattedTime = DateTime.UtcNow.ToString("h: mm tt");
             await _client.SetActivityAsync(new Game($"It is now {formattedTime} in UTC", ActivityType.Listening));
             } catch (Exception ex) {
             Console.WriteLine($"Error updating status: {ex.Message}");
@@ -47,11 +45,6 @@ public class Program
         };
         timer.AutoReset = true;
         timer.Enabled = true;
-        
-        // Check if daylight saving time is in effect
-        bool isDST = TimeZoneInfo.Local.IsDaylightSavingTime(DateTime.Now);
-        string dstStatus = isDST ? "(DST Active)" : "(Standard Time)";
-        await _client.SetActivityAsync(new Game($"{DateTime.UtcNow} in UTC", ActivityType.Listening));
         foreach (var guild in _client.Guilds)
         {
             await CommandRegistration.RegisterCommandsForGuild(guild);
