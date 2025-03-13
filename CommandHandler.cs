@@ -374,7 +374,7 @@ namespace Discord_Bot_Dusk
                     }
                     else{
                         string id = optionValue;
-                        string url2 = $"https://www.amiiboapi.com/api/amiibo/{id}";
+                        string url2 = $"https://amiiboapi.com/api/amiibo/{id}/";
                         using (HttpClient client = new HttpClient())
                         {
                             try
