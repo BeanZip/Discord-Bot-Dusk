@@ -366,7 +366,7 @@ namespace Discord_Bot_Dusk
                     }
                     return;
                 case "amiibo":
-                    var optionID = command.Data.Options.FirstOrDefault(o => o.Name == "id");  
+                    var optionID = command.Data.Options.FirstOrDefault(o => o.Name == "name");  
                     var optionValue = optionID?.Value.ToString();
                     if (string.IsNullOrEmpty(optionValue))
                     {
@@ -375,7 +375,7 @@ namespace Discord_Bot_Dusk
                     }
                     else{
                         string id = optionValue;
-                        string url2 = $"https://amiiboapi.com/api/amiibo/{id}/";
+                        string url2 = $"https://amiiboapi.com/api/amiibo?name={id}";
                         using (HttpClient client = new HttpClient())
                         {
                             try

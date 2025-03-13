@@ -76,7 +76,7 @@ namespace Discord_Bot_Dusk
                     new SlashCommandBuilder()
                        .WithName("amiibo")
                        .WithDescription("Get information about an amiibo")
-                       .AddOption("id", ApplicationCommandOptionType.Integer, "The ID of the Amiibo", isRequired: true),
+                       .AddOption("name", ApplicationCommandOptionType.String, "The name of the Amiibo", isRequired: true),
                 };
 
                 foreach (var cmd in commands)
