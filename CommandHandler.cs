@@ -396,6 +396,7 @@ namespace Discord_Bot_Dusk
                                 string gameSeries = amiibo["gameSeries"]?.ToString() ?? "No game series available";
                                 string image = amiibo["image"]?.ToString() ?? "No image available";
                                 string amiiboInfo = $"Name: {name}\nCharacter: {character}\nSeries: {series}\nGame Series: {gameSeries}\nImage: {image}";
+                                await Task.Delay(1000);
                                 await command.RespondAsync(amiiboInfo);
                             }
                             catch (Exception ex)
