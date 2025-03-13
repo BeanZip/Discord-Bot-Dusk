@@ -374,7 +374,7 @@ namespace Discord_Bot_Dusk
                         return;
                     }
                     else{
-                        string id = optionValue;
+                        string id = optionValue.ToString();
                         string url2 = $"https://amiiboapi.com/api/amiibo?name={id}";
                         using (HttpClient client = new HttpClient())
                         {
