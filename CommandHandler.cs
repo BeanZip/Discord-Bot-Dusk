@@ -1,3 +1,4 @@
+using Discord;
 using Discord.WebSocket;
 using Newtonsoft.Json.Linq;
 
@@ -385,7 +386,7 @@ namespace Discord_Bot_Dusk
                                 
                                 if (amiiboArray == null || !amiiboArray.Any())
                                 {
-                                    await command.RespondAsync("No amiibo information found.");
+                                    await command.RespondAsync("No amiibo information found.",ephemeral:true);
                                     return;
                                 }
                                 
@@ -395,9 +396,14 @@ namespace Discord_Bot_Dusk
                                 string character = amiibo["character"]?.ToString() ?? "No character available";
                                 string gameSeries = amiibo["gameSeries"]?.ToString() ?? "No game series available";
                                 string image = amiibo["image"]?.ToString() ?? "No image available";
-                                string amiiboInfo = $"Name: {name}\nCharacter: {character}\nSeries: {series}\nGame Series: {gameSeries}\nImage: {image}";
+                                var embed = new EmbedBuilder()
+                                .WithTitle(name)
+                                .WithDescription($"Character: {character}\nSeries: {series}\nGame Series: {gameSeries}")
+                                .WithImageUrl(image)
+                                .WithColor(Color.Blue)
+                                .Build();
                                 await Task.Delay(1000);
-                                await command.RespondAsync(amiiboInfo);
+                                await command.RespondAsync(embed: embed);
                             }
                             catch (Exception ex)
                             {
