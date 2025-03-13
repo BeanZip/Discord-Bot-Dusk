@@ -364,6 +364,49 @@ namespace Discord_Bot_Dusk
                         }
                     }
                     return;
+                case "amiibo":
+                    var optionID = command.Data.Options.FirstOrDefault(o => o.Name == "id");  
+                    var optionValue = optionID?.Value.ToString();
+                    if (string.IsNullOrEmpty(optionValue))
+                    {
+                        await command.RespondAsync("Please provide a valid amiibo name.");
+                        return;
+                    }
+                    else{
+                        string id = optionValue;
+                        string url2 = $"https://www.amiiboapi.com/api/amiibo/{id}";
+                        using (HttpClient client = new HttpClient())
+                        {
+                            try
+                            {
+                                string json = await client.GetStringAsync(url2);
+                                JObject amiiboJson = JObject.Parse(json);
+                                JArray? amiiboArray = amiiboJson["amiibo"] as JArray;
+                                
+                                if (amiiboArray == null || !amiiboArray.Any())
+                                {
+                                    await command.RespondAsync("No amiibo information found.");
+                                    return;
+                                }
+                                
+                                JToken amiibo = amiiboArray[0];
+                                string name = amiibo["name"]?.ToString() ?? "No name available";
+                                string series = amiibo["amiiboSeries"]?.ToString() ?? "No series available";
+                                string character = amiibo["character"]?.ToString() ?? "No character available";
+                                string gameSeries = amiibo["gameSeries"]?.ToString() ?? "No game series available";
+                                string image = amiibo["image"]?.ToString() ?? "No image available";
+                                string amiiboInfo = $"Name: {name}\nCharacter: {character}\nSeries: {series}\nGame Series: {gameSeries}\nImage: {image}";
+                                await command.RespondAsync(amiiboInfo);
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine($"Error in amiibo command: {ex.Message}");
+                                await command.RespondAsync("An error occurred while fetching the amiibo information.");
+                            }
+                        }
+                    }
+                    return;
+                
             }
         }
     }

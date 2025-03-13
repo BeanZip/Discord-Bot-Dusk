@@ -69,9 +69,14 @@ namespace Discord_Bot_Dusk
                         .AddOption("operation", ApplicationCommandOptionType.String, "The operation to perform", isRequired: true)
                         .AddOption("num1", ApplicationCommandOptionType.Integer, "The first number", isRequired: true)
                         .AddOption("num2", ApplicationCommandOptionType.Integer, "The second number", isRequired: true),
+
                     new SlashCommandBuilder()
                         .WithName("joke")
                         .WithDescription("Get a random Joke"),
+                    new SlashCommandBuilder()
+                       .WithName("amiibo")
+                       .WithDescription("Get information about an amiibo")
+                       .AddOption("id", ApplicationCommandOptionType.Integer, "The ID of the Amiibo", isRequired: true),
                 };
 
                 foreach (var cmd in commands)
