@@ -104,6 +104,7 @@ namespace Discord_Bot_Dusk
                         TimeZones.MST => TimeZoneInfo.FindSystemTimeZoneById("Mountain Standard Time"),
                         TimeZones.AKST => TimeZoneInfo.FindSystemTimeZoneById("Alaskan Standard Time"),
                         TimeZones.HST => TimeZoneInfo.FindSystemTimeZoneById("Hawaiian Standard Time"),
+                        TimeZones.
                         _ => TimeZoneInfo.Local // Default case (use local timezone)
                     };
 
