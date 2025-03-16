@@ -58,7 +58,6 @@ namespace Discord_Bot_Dusk
                             TimeZoneInfo.FindSystemTimeZoneById("Central Standard Time")).ToString("hh:mm tt"),
                         TimeZones.EST => TimeZoneInfo.ConvertTimeFromUtc(currentTime,
                             TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time")).ToString("hh:mm tt"),
-                            //add jst thingie
                         _ => currentTime.ToString("hh:mm tt") // Default case (use UTC)
                     };
 
@@ -108,8 +107,7 @@ namespace Discord_Bot_Dusk
                         TimeZones.CST => TimeZoneInfo.FindSystemTimeZoneById("Central Standard Time"),
                         TimeZones.MST => TimeZoneInfo.FindSystemTimeZoneById("Mountain Standard Time"),
                         TimeZones.AKST => TimeZoneInfo.FindSystemTimeZoneById("Alaskan Standard Time"),
-                        TimeZones.HST => TimeZoneInfo.FindSystemTimeZoneById("Hawaiian Standard Time"),\
-                        // Add TimeZones.JST HERE!!!!
+                        TimeZones.HST => TimeZoneInfo.FindSystemTimeZoneById("Hawaiian Standard Time"),
                         _ => TimeZoneInfo.Local // Default case (use local timezone)
                     };
 
