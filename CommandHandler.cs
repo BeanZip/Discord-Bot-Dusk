@@ -34,9 +34,9 @@ namespace Discord_Bot_Dusk
                 case "current-time":
                     var option = command.Data.Options.FirstOrDefault(o => o.Name == "timezones");
 
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
+    #pragma warning disable CS8602 // Dereference of a possibly null reference.
                     string userTimeZone = option.Value.ToString().ToUpper(); // Normalize case
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
+    #pragma warning restore CS8602 // Dereference of a possibly null reference.
 
 
                     // Get current UTC time and convert to the selected time zone
@@ -58,6 +58,7 @@ namespace Discord_Bot_Dusk
                             TimeZoneInfo.FindSystemTimeZoneById("Central Standard Time")).ToString("hh:mm tt"),
                         TimeZones.EST => TimeZoneInfo.ConvertTimeFromUtc(currentTime,
                             TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time")).ToString("hh:mm tt"),
+                            //add jst thingie
                         _ => currentTime.ToString("hh:mm tt") // Default case (use UTC)
                     };
 
@@ -72,11 +73,15 @@ namespace Discord_Bot_Dusk
                             {11, "Roast Beef"}, {12, "Italian"}, {13, "Veggie"},
                             {14, "Reuben"}, {15, "French Dip"}, {16, "Meatball"},
                             {17, "Pulled Pork"}, {18, "Cuban"}, {19, "Caprese"},
-                            {20, "Philly Cheesesteak"},{21, "Monte Cristo"}, {22, "Croque Monsieur"}
+                            {20, "Philly Cheesesteak"},{21, "Monte Cristo"}, {22, "Croque Monsieur"},
+                            {23, "Hot Dog"},{24,"Lobster Roll"}
                         };
                     Random random = new Random();
                     int randomIndex = random.Next(sandwiches.Count);
-                    string responseMessage = sandwiches[randomIndex];
+                    var responseMessage = sandwiches[randomIndex];
+                    if(randomIndex == 23){
+                       await command.RespondAsync($"{command.User.Mention} Here is your hot dog (it's like a sandwich trust). Enjoy!");
+                    }
                     await command.RespondAsync($"{command.User.Mention} Here is your {responseMessage} sandwich.");
                     break;
                 case "current-day":
@@ -103,8 +108,8 @@ namespace Discord_Bot_Dusk
                         TimeZones.CST => TimeZoneInfo.FindSystemTimeZoneById("Central Standard Time"),
                         TimeZones.MST => TimeZoneInfo.FindSystemTimeZoneById("Mountain Standard Time"),
                         TimeZones.AKST => TimeZoneInfo.FindSystemTimeZoneById("Alaskan Standard Time"),
-                        TimeZones.HST => TimeZoneInfo.FindSystemTimeZoneById("Hawaiian Standard Time"),
-                        TimeZones.
+                        TimeZones.HST => TimeZoneInfo.FindSystemTimeZoneById("Hawaiian Standard Time"),\
+                        // Add TimeZones.JST HERE!!!!
                         _ => TimeZoneInfo.Local // Default case (use local timezone)
                     };
 
@@ -214,7 +219,6 @@ namespace Discord_Bot_Dusk
                             _ => TimeZoneInfo.Local // Default case (use local timezone)
                         };
 
-                        // Convert the date to the given time zone
                         DateTime userDate = TimeZoneInfo.ConvertTime(date, timeZone2);
 
                         // Send response
