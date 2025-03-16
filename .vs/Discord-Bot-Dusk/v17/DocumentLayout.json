@@ -1,7 +1,6 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "C:\\Users\\Brendan\\RiderProjects\\Discord-Bot-Dusk\\",
-<<<<<<< HEAD
   "Documents": [
     {
       "AbsoluteMoniker": "D:0:0:{06906466-60C0-4BFB-A0BD-490BC5C8DFA7}|Discord-Bot-Dusk.csproj|c:\\users\\brendan\\riderprojects\\discord-bot-dusk\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -12,14 +11,10 @@
       "RelativeMoniker": "D:0:0:{06906466-60C0-4BFB-A0BD-490BC5C8DFA7}|Discord-Bot-Dusk.csproj|solutionrelative:math.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
-=======
-  "Documents": [],
->>>>>>> origin/new-timezone
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
       "VerticalTabListWidth": 256,
-<<<<<<< HEAD
       "DocumentGroups": [
         {
           "DockedWidth": 200,
@@ -54,9 +49,6 @@
           ]
         }
       ]
-=======
-      "DocumentGroups": []
->>>>>>> origin/new-timezone
     }
   ]
 }
