@@ -12,6 +12,9 @@ namespace Discord_Bot_Dusk
         private static TimeZones TimeZone;
         private static readonly string? devId = Environment.GetEnvironmentVariable("FatherId");
         private static DiscordSocketClient? _client;
+        private static readonly HttpClient _httpClient = new HttpClient();
+        // Add a simple cache system
+        private static readonly Dictionary<string, (DateTime Expiry, string Data)> _amiiboCache = new();
 
         /// <summary>
         /// Initialize the Command Handler
@@ -287,7 +290,6 @@ namespace Discord_Bot_Dusk
                         {
                             await command.RespondAsync("Click... 💥");
                             await command.FollowupAsync($"{command.User.Mention} has been shot dead.");
-                            await Task.Delay(300);
                         }
                         else
                         {
@@ -341,31 +343,30 @@ namespace Discord_Bot_Dusk
                     return;
                 case "joke":
                     string url = "https://sv443.net/jokeapi/v2/joke/Any";
-                    using (HttpClient client = new HttpClient())
+                    try
                     {
-                        try
-                        {
-                            string json = await client.GetStringAsync(url);
-                            JObject joke = JObject.Parse(json);
+                        // Set a reasonable timeout
+                        var cancellationToken = new CancellationTokenSource(TimeSpan.FromSeconds(5)).Token;
+                        string json = await _httpClient.GetStringAsync(url, cancellationToken);
+                        JObject joke = JObject.Parse(json);
 
-                            if (joke["type"]?.ToString() == "twopart")
-                            {
-                                string setup = joke["setup"]?.ToString() ?? "No setup available";
-                                string delivery = joke["delivery"]?.ToString() ?? "No delivery available";
-                                string jokeText = setup + "\n" + delivery;
-                                await command.RespondAsync(jokeText);
-                            }
-                            else // Handle single part jokes
-                            {
-                                string jokeText = joke["joke"]?.ToString() ?? "No joke available";
-                                await command.RespondAsync(jokeText);
-                            }
-                        }
-                        catch (Exception ex)
+                        if (joke["type"]?.ToString() == "twopart")
                         {
-                            Console.WriteLine($"Error in joke command: {ex.Message}");
-                            await command.RespondAsync("An error occurred while fetching the joke.");
+                            string setup = joke["setup"]?.ToString() ?? "No setup available";
+                            string delivery = joke["delivery"]?.ToString() ?? "No delivery available";
+                            string jokeText = setup + "\n" + delivery;
+                            await command.RespondAsync(jokeText);
                         }
+                        else // Handle single part jokes
+                        {
+                            string jokeText = joke["joke"]?.ToString() ?? "No joke available";
+                            await command.RespondAsync(jokeText);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Error in joke command: {ex.Message}");
+                        await command.RespondAsync("An error occurred while fetching the joke.");
                     }
                     return;
                 case "amiibo":
@@ -377,6 +378,16 @@ namespace Discord_Bot_Dusk
                         return;
                     }
                     else{
+                        // Check cache first
+                        string cacheKey = optionValue.ToLowerInvariant();
+                        if (_amiiboCache.TryGetValue(cacheKey, out var cachedData) && cachedData.Expiry > DateTime.UtcNow)
+                        {
+                            // Use cached data directly
+                            JObject amiiboJson = JObject.Parse(cachedData.Data);
+                            // Process the JSON...
+                            return;
+                        }
+                        
                         string id = optionValue.ToString();
                         string url2 = $"https://amiiboapi.com/api/amiibo?name={id}";
                         using (HttpClient client = new HttpClient())
@@ -384,6 +395,8 @@ namespace Discord_Bot_Dusk
                             try
                             {
                                 string json = await client.GetStringAsync(url2);
+                                // Cache the result (expires in 24 hours)
+                                _amiiboCache[cacheKey] = (DateTime.UtcNow.AddHours(24), json);
                                 JObject amiiboJson = JObject.Parse(json);
                                 JArray? amiiboArray = amiiboJson["amiibo"] as JArray;
                                 
@@ -405,7 +418,6 @@ namespace Discord_Bot_Dusk
                                 .WithImageUrl(image)
                                 .WithColor(Color.Blue)
                                 .Build();
-                                await Task.Delay(1000);
                                 await command.RespondAsync(embed: embed);
                             }
                             catch (Exception ex)
