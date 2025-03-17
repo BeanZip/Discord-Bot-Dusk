@@ -49,7 +49,7 @@ namespace Discord_Bot_Dusk
             _client.SlashCommandExecuted += CommandHandler.HandleCommand;
 
             // Get the bot token from environment variables
-            string token = Environment.GetEnvironmentVariable("DiscordToken") 
+            string token = Environment.GetEnvironmentVariable("BotToken") 
                 ?? throw new InvalidOperationException("Bot token not found in environment variables.");
 
             await _client.LoginAsync(TokenType.Bot, token);
