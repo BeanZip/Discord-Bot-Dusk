@@ -18,6 +18,7 @@ namespace Discord_Bot_Dusk
         {
             try
             {
+                await Task.Yield(); // Yield to avoid blocking the main thread
                 var commands = new SlashCommandBuilder[]
                 {
                     new SlashCommandBuilder()

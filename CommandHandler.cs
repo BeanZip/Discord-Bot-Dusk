@@ -232,45 +232,19 @@ namespace Discord_Bot_Dusk
                     return;
 
                 case "delete-command":
-                    var optionDelete = command.Data.Options.FirstOrDefault(o => o.Name == "message-id");
-                    if (optionDelete?.Value == null)
-                        return;
-                    string? messageId = optionDelete.Value.ToString();
-                    if (string.IsNullOrEmpty(messageId))
-                        return;
-
-                    if (devId == null)
-                    {
-                        await command.RespondAsync("Developer ID not found.");
-                        return;
-                    }
-
-                    if (command.User.Id == ulong.Parse(devId) && !command.User.IsBot)
-                    {
-                        var message = await command.Channel.GetMessageAsync(ulong.Parse(messageId));
-                        if (message != null)
-                        {
-                            await message.DeleteAsync();
-                            await command.RespondAsync("Message deleted successfully.");
-                        }
-                        else
-                        {
-                            await command.RespondAsync("Message not found.");
-                        }
-                    }
-                    else
-                    {
-                        await command.RespondAsync("You do not have permission to delete messages.");
-                    }
-
+                    NotImplementedException exo = new NotImplementedException();
+                    await command.RespondAsync($"This command is not implemented yet. {exo.Message}");
                     return;
                 case "roulette":
                     var optionBullets = command.Data.Options.FirstOrDefault(o => o.Name == "bullets");
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
-                    string? bulletsStr = optionBullets.Value.ToString();
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
+                    if(optionBullets == null || optionBullets.Value == null) {
+                        await command.RespondAsync("Please provide the number of bullets to load.");
+                        return;
+                    }
 
-                    if (optionBullets?.Value == null || string.IsNullOrEmpty(bulletsStr))
+                    string? bulletsStr = optionBullets.Value.ToString();
+
+                    if (string.IsNullOrEmpty(bulletsStr))
                     {
                         await command.RespondAsync("Please provide the number of bullets to load.");
                         return;
