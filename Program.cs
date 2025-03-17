@@ -1,58 +1,75 @@
 ﻿using Discord;
 using Discord.WebSocket;
+using System;
+using System.Threading.Tasks;
 
-namespace Discord_Bot_Dusk;
-
-public class Program
+namespace Discord_Bot_Dusk
 {
-    private static DiscordSocketClient? _client;
+    public class Program
+    {
+        private DiscordSocketClient? _client;
 
-    public static async Task Main()
-    {
-        _client = new DiscordSocketClient();
-        _client.Log += Log;
-        _client.Ready += Client_Ready;
-        _client.GuildAvailable += OnGuildAvailable;
-        _client.SlashCommandExecuted += CommandHandler.HandleCommand;
-        var token = Environment.GetEnvironmentVariable("BotToken");
-        await _client.LoginAsync(TokenType.Bot, token);
-        await _client.StartAsync();
-        await Task.Delay(-1);
-    }
+        public static void Main(string[] args)
+            => new Program().MainAsync().GetAwaiter().GetResult();
 
-    private static Task Log(LogMessage msg)
-    {
-        Console.WriteLine(msg.ToString());
-        return Task.CompletedTask;
-    }
-        public static async Task Client_Ready()
-    {
-        if(_client == null)
+        public async Task MainAsync()
         {
-            return;
-        }
-        
-        // Create a timer that updates the status every minute
-        var timer = new System.Timers.Timer(60000); // 60000 ms = 1 minute
-        timer.Elapsed += async (sender, e) => {
-            bool IsDst = TimeZoneInfo.Local.IsDaylightSavingTime(DateTime.UtcNow);
-            string formattedTime = IsDst ? formattedTime = DateTime.UtcNow.ToString("h: mm tt") + DateTime.UtcNow.AddHours(1) : formattedTime = DateTime.UtcNow.ToString("h: mm tt");
-            await _client.SetActivityAsync(new Game($"It is now {formattedTime} in UTC", ActivityType.Listening));
-        };
-        timer.AutoReset = true;
-        timer.Enabled = true;
-        
-        // _client is already ready at this point since this is the Client_Ready method
-        foreach (var guild in _client.Guilds)
-        {
-            await CommandRegistration.RegisterCommandsForGuild(guild);
-        }
-    }
+            _client = new DiscordSocketClient(new DiscordSocketConfig
+            {
+                // Add any configuration options here
+                GatewayIntents = GatewayIntents.AllUnprivileged | GatewayIntents.MessageContent
+            });
 
-    private static async Task OnGuildAvailable(SocketGuild guild)
-    {
-        Console.WriteLine($"Bot joined a new guild: {guild.Name} (ID: {guild.Id})");
-        Console.WriteLine($"Guild has {guild.MemberCount} members");
-        await CommandRegistration.RegisterCommandsForGuild(guild);
+            // Initialize the command handler
+            CommandHandler.Initialize(_client);
+
+            // Setup event handlers CORRECTLY
+            _client.Log += LogAsync;
+            _client.Ready += ReadyAsync;
+            
+            // Fix for "GuildAvailable Handler is Blocking the Gateway Task"
+            _client.GuildAvailable += guild => 
+            {
+                // Fire and forget - properly handling exceptions
+                _ = Task.Run(async () =>
+                {
+                    try
+                    {
+                        await CommandRegistration.RegisterCommandsForGuild(guild);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Error registering commands for guild {guild.Name}: {ex.Message}");
+                    }
+                });
+                
+                return Task.CompletedTask;
+            };
+            
+            _client.SlashCommandExecuted += CommandHandler.HandleCommand;
+
+            // Get the bot token from environment variables
+            string token = Environment.GetEnvironmentVariable("DiscordToken") 
+                ?? throw new InvalidOperationException("Bot token not found in environment variables.");
+
+            await _client.LoginAsync(TokenType.Bot, token);
+            await _client.StartAsync();
+
+            // Block this task until the program is closed.
+            await Task.Delay(-1);
+        }
+
+        private Task LogAsync(LogMessage log)
+        {
+            Console.WriteLine(log);
+            return Task.CompletedTask;
+        }
+
+        private Task ReadyAsync()
+        {
+            if(_client == null) return Task.CompletedTask; // Safety check
+            Console.WriteLine($"{_client.CurrentUser} is connected!");
+            return Task.CompletedTask;
+        }
     }
 }
