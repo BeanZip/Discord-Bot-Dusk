@@ -16,8 +16,11 @@ namespace Discord_Bot_Dusk
         {
             _client = new DiscordSocketClient(new DiscordSocketConfig
             {
-                // Add any configuration options here
-                GatewayIntents = GatewayIntents.AllUnprivileged | GatewayIntents.MessageContent
+                // Use only intents your bot needs and is authorized for
+                GatewayIntents = GatewayIntents.Guilds | 
+                                 GatewayIntents.GuildMessages |
+                                 GatewayIntents.GuildMembers |
+                                 GatewayIntents.MessageContent // You'll need to enable this in Discord Developer Portal
             });
 
             // Initialize the command handler
