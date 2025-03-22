@@ -1,7 +1,5 @@
 ﻿using Discord;
 using Discord.WebSocket;
-using System;
-using System.Threading.Tasks;
 
 namespace Discord_Bot_Dusk
 {
@@ -20,14 +18,14 @@ namespace Discord_Bot_Dusk
                 GatewayIntents = GatewayIntents.Guilds | 
                                  GatewayIntents.GuildMessages |
                                  GatewayIntents.GuildMembers |
-                                 GatewayIntents.MessageContent // You'll need to enable this in Discord Developer Portal
+                                 GatewayIntents.MessageContent
             });
 
             // Initialize the command handler
             CommandHandler.Initialize(_client);
 
             // Setup event handlers CORRECTLY
-            _client.Log += LogAsync;
+            _client.Log += LogAsync;	
             _client.Ready += ReadyAsync;
             
             // Fix for "GuildAvailable Handler is Blocking the Gateway Task"

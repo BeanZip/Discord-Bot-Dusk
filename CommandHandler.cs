@@ -306,6 +306,8 @@ namespace Discord_Bot_Dusk
                             "subtract" => Math.Calculate(num1, num2, Math.Operations.Subtract),
                             "multiply" => Math.Calculate(num1, num2, Math.Operations.Multiply),
                             "divide" => TryDivide(num1, num2),
+			    "power" => Math.Calculate(num1,num2,Math.Operations.Power),
+			    "sqrt" => Math.Calculate(num1, num2, Math.Operations.Sqrt),
                             _ => double.NaN // Default case for unknown operations
                         };
 
