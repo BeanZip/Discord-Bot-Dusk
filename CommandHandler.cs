@@ -70,6 +70,7 @@ namespace Discord_Bot_Dusk
                             TimeZoneInfo.FindSystemTimeZoneById("Central Standard Time")).ToString("hh:mm tt"),
                         TimeZones.EST => TimeZoneInfo.ConvertTimeFromUtc(currentTime,
                             TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time")).ToString("hh:mm tt"),
+			TimeZones.JST => TimeZoneInfo.ConvertTimeFromUtc(currentTime,TimeZoneInfo.FindSystemTimeZoneById("Japan Standard Time")).ToString("hh:mm tt"),
                         _ => currentTime.ToString("hh:mm tt") // Default case (use UTC)
                     };
 

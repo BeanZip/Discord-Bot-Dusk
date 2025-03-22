@@ -3,7 +3,9 @@ public class Math{
         Add,
         Subtract,
         Multiply,
-        Divide
+        Divide,
+	Power,
+	Sqrt
     }
 
     public static double Calculate(double num1, double num2, Operations operation){
@@ -16,6 +18,10 @@ public class Math{
                 return num1 * num2;
             case Operations.Divide:
                 return num1 / num2;
+	    case Operations.Power:
+		return num1 * num1;
+	    case Operations.Sqrt:
+		return System.Math.Abs(num1);
             default:
                 return 0;
         }

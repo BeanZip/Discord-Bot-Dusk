@@ -7,5 +7,6 @@ public enum TimeZones{
     MST,
     PST,
     AKST,
-    HST
+    HST,
+    JST
 }
