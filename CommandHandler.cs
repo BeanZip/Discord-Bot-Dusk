@@ -112,7 +112,7 @@ namespace Discord_Bot_Dusk
                         return;
                     }
 
-                    TimeZoneInfo timeZone = timezone switch
+                    TimeZoneInfo timeZone = timezone switch 
                     {
                         TimeZones.EST => TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time"),
                         TimeZones.PST => TimeZoneInfo.FindSystemTimeZoneById("Pacific Standard Time"),
@@ -120,6 +120,7 @@ namespace Discord_Bot_Dusk
                         TimeZones.MST => TimeZoneInfo.FindSystemTimeZoneById("Mountain Standard Time"),
                         TimeZones.AKST => TimeZoneInfo.FindSystemTimeZoneById("Alaskan Standard Time"),
                         TimeZones.HST => TimeZoneInfo.FindSystemTimeZoneById("Hawaiian Standard Time"),
+			TimeZones.JST => TimeZoneInfo.FindSystemTimeZoneById("Japan Standard Time"),
                         _ => TimeZoneInfo.Local // Default case (use local timezone)
                     };
 
