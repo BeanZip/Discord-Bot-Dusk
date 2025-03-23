@@ -23,7 +23,7 @@ namespace Discord_Bot_Dusk
             { TimeZones.MST, TimeZoneInfo.FindSystemTimeZoneById("Mountain Standard Time") },
             { TimeZones.AKST, TimeZoneInfo.FindSystemTimeZoneById("Alaskan Standard Time") },
             { TimeZones.HST, TimeZoneInfo.FindSystemTimeZoneById("Hawaiian Standard Time") },
-	    {TimeZones.JST, TimeZoneInfo.FindSystemTimeZoneById("Japan Standard Time") }
+            { TimeZones.JST, TimeZoneInfo.FindSystemTimeZoneById("Tokyo Standard Time")}
         };
 
         /// <summary>
@@ -71,8 +71,9 @@ namespace Discord_Bot_Dusk
                             TimeZoneInfo.FindSystemTimeZoneById("Central Standard Time")).ToString("hh:mm tt"),
                         TimeZones.EST => TimeZoneInfo.ConvertTimeFromUtc(currentTime,
                             TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time")).ToString("hh:mm tt"),
-			TimeZones.JST => TimeZoneInfo.ConvertTimeFromUtc(currentTime,TimeZoneInfo.FindSystemTimeZoneById("Japan Standard Time")).ToString("hh:mm tt"),
+                        TimeZones.JST => TimeZoneInfo.ConvertTimeFromUtc(currentTime,TimeZoneInfo.FindSystemTimeZoneById("Tokyo Standard Time")).ToString("hh:mm tt"),
                         _ => currentTime.ToString("hh:mm tt") // Default case (use UTC)
+
                     };
 
                     await command.RespondAsync($"Currently it is {formattedTime} in {userTimeZone} {command.User.Mention}"); // Only returns the time
@@ -122,9 +123,11 @@ namespace Discord_Bot_Dusk
                         TimeZones.MST => TimeZoneInfo.FindSystemTimeZoneById("Mountain Standard Time"),
                         TimeZones.AKST => TimeZoneInfo.FindSystemTimeZoneById("Alaskan Standard Time"),
                         TimeZones.HST => TimeZoneInfo.FindSystemTimeZoneById("Hawaiian Standard Time"),
-			TimeZones.JST => TimeZoneInfo.FindSystemTimeZoneById("Japan Standard Time"),
+                        TimeZones.JST => TimeZoneInfo.FindSystemTimeZoneById("Tokyo Standard Time"),
                         _ => TimeZoneInfo.Local // Default case (use local timezone)
+
                     };
+
 
                     DateTime userTime = TimeZoneInfo.ConvertTimeFromUtc(utcNow, timeZone);
 

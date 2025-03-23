@@ -18,10 +18,10 @@ public class Math{
                 return num1 * num2;
             case Operations.Divide:
                 return num1 / num2;
-	    case Operations.Power:
-		return num1 * num1;
-	    case Operations.Sqrt:
-		return System.Math.Abs(num1);
+            case Operations.Power:
+                return num1 * num1;
+        case Operations.Sqrt:
+                return System.Math.Abs(num1);
             default:
                 return 0;
         }
