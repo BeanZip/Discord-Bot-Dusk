@@ -22,7 +22,8 @@ namespace Discord_Bot_Dusk
             { TimeZones.CST, TimeZoneInfo.FindSystemTimeZoneById("Central Standard Time") },
             { TimeZones.MST, TimeZoneInfo.FindSystemTimeZoneById("Mountain Standard Time") },
             { TimeZones.AKST, TimeZoneInfo.FindSystemTimeZoneById("Alaskan Standard Time") },
-            { TimeZones.HST, TimeZoneInfo.FindSystemTimeZoneById("Hawaiian Standard Time") }
+            { TimeZones.HST, TimeZoneInfo.FindSystemTimeZoneById("Hawaiian Standard Time") },
+	    {TimeZones.JST, TimeZoneInfo.FindSystemTimeZoneById("Japan Standard Time") }
         };
 
         /// <summary>

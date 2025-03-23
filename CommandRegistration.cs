@@ -74,6 +74,7 @@ namespace Discord_Bot_Dusk
                     new SlashCommandBuilder()
                         .WithName("joke")
                         .WithDescription("Get a random Joke"),
+
                     new SlashCommandBuilder()
                        .WithName("amiibo")
                        .WithDescription("Get information about an amiibo")
