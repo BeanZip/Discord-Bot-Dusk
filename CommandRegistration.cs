@@ -69,7 +69,7 @@ namespace Discord_Bot_Dusk
                         .WithDescription("Perform a math operation")
                         .AddOption("operation", ApplicationCommandOptionType.String, "The operation to perform", isRequired: true)
                         .AddOption("num1", ApplicationCommandOptionType.Integer, "The first number", isRequired: true)
-                        .AddOption("num2", ApplicationCommandOptionType.Integer, "The second number", isRequired: true),
+                        .AddOption("num2", ApplicationCommandOptionType.Integer, "The second number", isRequired: false),
 
                     new SlashCommandBuilder()
                         .WithName("joke")

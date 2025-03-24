@@ -1,4 +1,3 @@
-using Discord;
 using Discord.WebSocket;
 using Newtonsoft.Json.Linq;
 
@@ -41,7 +40,12 @@ namespace Discord_Bot_Dusk
         /// <param name="command"></param>
         /// <returns></returns>
         public static async Task HandleCommand(SocketSlashCommand command)
-        {
+        {   try{
+                   Console.WriteLine($"[{DateTime.UtcNow}], {command.Data.Name} used by {command.User.ToString()} in {command.GuildId.ToString()}");
+               } catch(Exception ex){
+                   Console.WriteLine($"Couldn't Log Message at {DateTime.UtcNow} because of {ex.Message}");
+               }
+
             switch (command.Data.Name)
             {
                 case "current-time":
@@ -304,14 +308,17 @@ namespace Discord_Bot_Dusk
 
                         double num1 = double.Parse(num1Str);
                         double num2 = double.Parse(num2Str);
+                        if(num2 == 0){
+                          await command.FollowupAsync("Only use sqrt or power with one value operations");
+                        }
                         double result = operation.ToLower() switch
                         {
                             "add" => Math.Calculate(num1, num2, Math.Operations.Add),
                             "subtract" => Math.Calculate(num1, num2, Math.Operations.Subtract),
                             "multiply" => Math.Calculate(num1, num2, Math.Operations.Multiply),
                             "divide" => TryDivide(num1, num2),
-			    "power" => Math.Calculate(num1,num2,Math.Operations.Power),
-			    "sqrt" => Math.Calculate(num1, num2, Math.Operations.Sqrt),
+                            "power" => Math.Calculate(num1,num2,Math.Operations.Power),
+                            "sqrt" => Math.Calculate(num1, num2, Math.Operations.Sqrt),
                             _ => double.NaN // Default case for unknown operations
                         };
 
@@ -356,7 +363,7 @@ namespace Discord_Bot_Dusk
                 case "amiibo":
                  NotImplementedException e = new NotImplementedException();
                  await command.RespondAsync(e.Message);
-                 break;
+                 return;
             }
         }
     }
