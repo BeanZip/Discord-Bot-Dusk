@@ -46,11 +46,10 @@ namespace Discord_Bot_Dusk
             {
                 case "current-time":
                     var option = command.Data.Options.FirstOrDefault(o => o.Name == "timezones");
-
-    #pragma warning disable CS8602 // Dereference of a possibly null reference.
                     string userTimeZone = option.Value.ToString().ToUpper(); // Normalize case
-    #pragma warning restore CS8602 // Dereference of a possibly null reference.
-
+                    if(option == null){
+                      await command.RespondAsync("Not A Valid Timezone");
+                    }
 
                     // Get current UTC time and convert to the selected time zone
                     DateTime currentTime = DateTime.UtcNow;
@@ -71,7 +70,8 @@ namespace Discord_Bot_Dusk
                             TimeZoneInfo.FindSystemTimeZoneById("Central Standard Time")).ToString("hh:mm tt"),
                         TimeZones.EST => TimeZoneInfo.ConvertTimeFromUtc(currentTime,
                             TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time")).ToString("hh:mm tt"),
-                        TimeZones.JST => TimeZoneInfo.ConvertTimeFromUtc(currentTime,TimeZoneInfo.FindSystemTimeZoneById("Tokyo Standard Time")).ToString("hh:mm tt"),
+                        TimeZones.JST => TimeZoneInfo.ConvertTimeFromUtc(currentTime,
+                            TimeZoneInfo.FindSystemTimeZoneById("Tokyo Standard Time")).ToString("hh:mm tt"),
                         _ => currentTime.ToString("hh:mm tt") // Default case (use UTC)
 
                     };
@@ -354,65 +354,9 @@ namespace Discord_Bot_Dusk
                     }
                     return;
                 case "amiibo":
-                    var optionID = command.Data.Options.FirstOrDefault(o => o.Name == "name");  
-                    var optionValue = optionID?.Value.ToString();
-                    if (string.IsNullOrEmpty(optionValue))
-                    {
-                        await command.RespondAsync("Please provide a valid amiibo name.");
-                        return;
-                    }
-                    else{
-                        // Check cache first
-                        string cacheKey = optionValue.ToLowerInvariant();
-                        if (_amiiboCache.TryGetValue(cacheKey, out var cachedData) && cachedData.Expiry > DateTime.UtcNow)
-                        {
-                            // Use cached data directly
-                            JObject amiiboJson = JObject.Parse(cachedData.Data);
-                            // Process the JSON...
-                            return;
-                        }
-                        
-                        string id = optionValue.ToString();
-                        string url2 = $"https://amiiboapi.com/api/amiibo?name={id}";
-                        using (HttpClient client = new HttpClient())
-                        {
-                            try
-                            {
-                                string json = await client.GetStringAsync(url2);
-                                // Cache the result (expires in 24 hours)
-                                _amiiboCache[cacheKey] = (DateTime.UtcNow.AddHours(24), json);
-                                JObject amiiboJson = JObject.Parse(json);
-                                JArray? amiiboArray = amiiboJson["amiibo"] as JArray;
-                                
-                                if (amiiboArray == null || !amiiboArray.Any())
-                                {
-                                    await command.RespondAsync("No amiibo information found.",ephemeral:true);
-                                    return;
-                                }
-                                
-                                JToken amiibo = amiiboArray[0];
-                                string name = amiibo["name"]?.ToString() ?? "No name available";
-                                string series = amiibo["amiiboSeries"]?.ToString() ?? "No series available";
-                                string character = amiibo["character"]?.ToString() ?? "No character available";
-                                string gameSeries = amiibo["gameSeries"]?.ToString() ?? "No game series available";
-                                string image = amiibo["image"]?.ToString() ?? "No image available";
-                                var embed = new EmbedBuilder()
-                                .WithTitle(name)
-                                .WithDescription($"Character: {character}\nSeries: {series}\nGame Series: {gameSeries}")
-                                .WithImageUrl(image)
-                                .WithColor(Color.Blue)
-                                .Build();
-                                await command.RespondAsync(embed: embed);
-                            }
-                            catch (Exception ex)
-                            {
-                                Console.WriteLine($"Error in amiibo command: {ex.Message}");
-                                await command.RespondAsync("An error occurred while fetching the amiibo information.");
-                            }
-                        }
-                    }
-                    return;
-                
+                 NotImplementedException e = new NotImplementedException();
+                 await command.RespondAsync(e.Message);
+                 break;
             }
         }
     }
