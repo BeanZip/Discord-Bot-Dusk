@@ -88,7 +88,7 @@ namespace Discord_Bot_Dusk
                             {14, "Reuben"}, {15, "French Dip"}, {16, "Meatball"},
                             {17, "Pulled Pork"}, {18, "Cuban"}, {19, "Caprese"},
                             {20, "Philly Cheesesteak"},{21, "Monte Cristo"}, {22, "Croque Monsieur"},
-                            {23, "Hot Dog"},{24,"Lobster Roll"}
+                            {23, "Hot Dog"},{24,"Lobster Roll"},{25,"[REDACTED]"}
                         };
                     Random random = new Random();
                     int randomIndex = random.Next(sandwiches.Count);
