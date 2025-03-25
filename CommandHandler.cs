@@ -178,7 +178,7 @@ namespace Discord_Bot_Dusk
                     }
                     return;
                 case "set-timer":
-                    var optionTimer = command.Data.Options.FirtOrDefault(o => o.Name == "time");
+                    var optionTimer = command.Data.Options.FirstOrDefault(o => o.Name == "time");
                     if (optionTimer?.Value == null)
                     {
                         await command.RespondAsync("Please provide a valid time to set the timer for.");
