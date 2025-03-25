@@ -16,14 +16,14 @@ namespace Discord_Bot_Dusk
         private static readonly Dictionary<string, (DateTime Expiry, string Data)> _amiiboCache = new();
         private static readonly Dictionary<TimeZones, TimeZoneInfo> _timeZoneInfos = new()
         {
-            { TimeZones.EST, TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time") },
+           { TimeZones.EST, TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time") },
             { TimeZones.PST, TimeZoneInfo.FindSystemTimeZoneById("Pacific Standard Time") },
             { TimeZones.CST, TimeZoneInfo.FindSystemTimeZoneById("Central Standard Time") },
             { TimeZones.MST, TimeZoneInfo.FindSystemTimeZoneById("Mountain Standard Time") },
             { TimeZones.AKST, TimeZoneInfo.FindSystemTimeZoneById("Alaskan Standard Time") },
             { TimeZones.HST, TimeZoneInfo.FindSystemTimeZoneById("Hawaiian Standard Time") },
             { TimeZones.JST, TimeZoneInfo.FindSystemTimeZoneById("Tokyo Standard Time")},
-            { TimeZones.AEST, TimeZoneInfo.FindSystemTimeZoneById("Australian Eastern Standard Time")},
+            { TimeZones.AEST, TimeZoneInfo.FindSystemTimeZoneById("AUS Eastern Standard Time")},
             {TimeZones.NZST, TimeZoneInfo.FindSystemTimeZoneById("New Zealand Standard Time")}
         };
 
@@ -130,6 +130,8 @@ namespace Discord_Bot_Dusk
                         TimeZones.AKST => TimeZoneInfo.FindSystemTimeZoneById("Alaskan Standard Time"),
                         TimeZones.HST => TimeZoneInfo.FindSystemTimeZoneById("Hawaiian Standard Time"),
                         TimeZones.JST => TimeZoneInfo.FindSystemTimeZoneById("Tokyo Standard Time"),
+                        TimeZones.AEST => TimeZoneInfo.FindSystemTimeZoneById("AUS Eastern Standard Time"),
+                        TimeZones.NZST => TimeZoneInfo.FindSystemTimeZoneById("New Zealand Standard Time"),
                         _ => TimeZoneInfo.Local // Default case (use local timezone)
 
                     };
