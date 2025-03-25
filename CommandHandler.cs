@@ -52,15 +52,14 @@ namespace Discord_Bot_Dusk
             {
                 case "current-time":
                     var option = command.Data.Options.FirstOrDefault(o => o.Name == "timezones");
-                    string userTimeZone = option.Value.ToString().ToUpper(); // Normalize case
-                    if(option == null){
-                      await command.RespondAsync("Not A Valid Timezone");
-                    }
-
+                     string userTimeZone = option.Value.ToString().ToUpper(); // Normalize case
                     // Get current UTC time and convert to the selected time zone
                     DateTime currentTime = DateTime.UtcNow;
                     // Convert using enum instead of string comparison
                     TimeZone = Enum.Parse<TimeZones>(userTimeZone);
+                    if(userTimeZone == null){
+                      await command.RespondAsync("Time Zone Variable isn't Set");
+                    }
 
                     string formattedTime = TimeZone switch
                     {
