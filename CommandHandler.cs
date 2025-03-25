@@ -22,7 +22,9 @@ namespace Discord_Bot_Dusk
             { TimeZones.MST, TimeZoneInfo.FindSystemTimeZoneById("Mountain Standard Time") },
             { TimeZones.AKST, TimeZoneInfo.FindSystemTimeZoneById("Alaskan Standard Time") },
             { TimeZones.HST, TimeZoneInfo.FindSystemTimeZoneById("Hawaiian Standard Time") },
-            { TimeZones.JST, TimeZoneInfo.FindSystemTimeZoneById("Tokyo Standard Time")}
+            { TimeZones.JST, TimeZoneInfo.FindSystemTimeZoneById("Tokyo Standard Time")},
+            { TimeZones.AEST, TimeZoneInfo.FindSystemTimeZoneById("Australian Eastern Standard Time")},
+            {TimeZones.NZST, TimeZoneInfo.FindSystemTimeZoneById("New Zealand Standard Time")}
         };
 
         /// <summary>
@@ -364,7 +366,8 @@ namespace Discord_Bot_Dusk
                  NotImplementedException e = new NotImplementedException();
                  await command.RespondAsync(e.Message);
                  return;
-            }
+
+               }
+          }
         }
-    }
-}
+  }
