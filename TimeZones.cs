@@ -10,6 +10,5 @@ public enum TimeZones{
     HST,
     JST,
     AEST,
-    NZST,
-    DST
+    NZST
 }
