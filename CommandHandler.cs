@@ -425,6 +425,7 @@ namespace Discord_Bot_Dusk
                      var embed = new EmbedBuilder().WithAuthor(command.User.Username, command.User.GetAvatarUrl())
                          .WithTitle($"Amiibo: {name}")
                          .WithDescription($"Series: {series}")
+                         .WithImageUrl(amiibo["image"]?.ToString() ?? "No image available")
                          .AddField("Release Dates", $"🇺🇸 US: {usReleaseDate}\n🇪🇺 EU: {euReleaseDate}\n🇯🇵 JP: {jpReleaseDate}")
                          .WithColor(Color.Blue)
                          .Build();
