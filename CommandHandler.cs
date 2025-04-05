@@ -430,7 +430,7 @@ namespace Discord_Bot_Dusk
                          .WithColor(Color.Blue)
                          .Build();
 
-                     await command.RespondAsync(embed: embed);
+                     await command.RespondAsync(embed: embed, ephemeral: true);
                       
                     } catch(Exception ex){
                       Console.WriteLine($"Error In Amiibo Command: {ex.Message}");
