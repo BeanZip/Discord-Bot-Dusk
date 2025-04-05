@@ -1,3 +1,4 @@
+using Discord;
 using Discord.WebSocket;
 using Newtonsoft.Json.Linq;
 
@@ -364,10 +365,77 @@ namespace Discord_Bot_Dusk
                     }
                     return;
                 case "amiibo":
-                 NotImplementedException e = new NotImplementedException();
-                 await command.RespondAsync(e.Message);
-                 return;
+                   var id = command.Data.Options.FirstOrDefault(o => o.Name == "id");
+                   if(id == null){
+                     await command.RespondAsync("Please add a value");
+                   }
+                   var idStr = id?.Value.ToString();
+                   string url2 = "https://dusk-amiibo-backend-production.up.railway.app/amiibo/id=";
+                   try{
+                     var cancellationToken2 = new CancellationTokenSource(TimeSpan.FromSeconds(5)).Token;
+                     string json = await _httpClient.GetStringAsync(url2 + idStr ,cancellationToken2);
+                     JObject amiibo = JObject.Parse(json);
+                     string name = amiibo["name"]?.ToString() ?? "No amiibo name available?? (That's weird)";
+                     string series = amiibo["series"]?.ToString() ?? "No Series Available (Bro does this amiibo exist)";
 
+                     // Access nested release date information
+                     string usReleaseDate = "N/A";
+                     string euReleaseDate = "N/A";
+                     string jpReleaseDate = "N/A";
+
+                     // Handle US release date
+                     if (amiibo["release"]?["us"] != null)
+                     {
+                         int? month = (int?)amiibo["release"]?["us"]?["month"];
+                         int? day = (int?)amiibo["release"]?["us"]?["day"];
+                         int? year = (int?)amiibo["release"]?["us"]?["year"];
+                         
+                         if (month.HasValue && day.HasValue && year.HasValue)
+                         {
+                             usReleaseDate = $"{month.Value}/{day.Value}/{year.Value}";
+                         }
+                     }
+
+                     // Handle EU release date
+                     if (amiibo["release"]?["eu"] != null)
+                     {
+                         int? month = (int?)amiibo["release"]?["eu"]?["month"];
+                         int? day = (int?)amiibo["release"]?["eu"]?["day"];
+                         int? year = (int?)amiibo["release"]?["eu"]?["year"];
+                         
+                         if (month.HasValue && day.HasValue && year.HasValue)
+                         {
+                             euReleaseDate = $"{month.Value}/{day.Value}/{year.Value}";
+                         }
+                     }
+
+                     // Handle JP release date
+                     if (amiibo["release"]?["jp"] != null)
+                     {
+                         int? month = (int?)amiibo["release"]?["jp"]?["month"];
+                         int? day = (int?)amiibo["release"]?["jp"]?["day"];
+                         int? year = (int?)amiibo["release"]?["jp"]?["year"];
+                         
+                         if (month.HasValue && day.HasValue && year.HasValue)
+                         {
+                             jpReleaseDate = $"{month.Value}/{day.Value}/{year.Value}";
+                         }
+                     }
+
+                     var embed = new EmbedBuilder().WithAuthor(command.User.Username, command.User.GetAvatarUrl())
+                         .WithTitle($"Amiibo: {name}")
+                         .WithDescription($"Series: {series}")
+                         .AddField("Release Dates", $"🇺🇸 US: {usReleaseDate}\n🇪🇺 EU: {euReleaseDate}\n🇯🇵 JP: {jpReleaseDate}")
+                         .WithColor(Color.Blue)
+                         .Build();
+
+                     await command.RespondAsync(embed: embed);
+                      
+                    } catch(Exception ex){
+                      Console.WriteLine($"Error In Amiibo Command: {ex.Message}");
+                      await command.RespondAsync("An error occurred while fetching the amiibo.");
+                   }
+                   return;
                }
           }
         }
