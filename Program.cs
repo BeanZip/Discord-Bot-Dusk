@@ -1,4 +1,4 @@
-﻿using Discord;
+using Discord;
 using Discord.WebSocket;
 
 namespace Discord_Bot_Dusk
@@ -14,7 +14,7 @@ namespace Discord_Bot_Dusk
         {
             _client = new DiscordSocketClient(new DiscordSocketConfig
             {
-                // Use only intents your bot needs and is authorized for
+
                 GatewayIntents = GatewayIntents.Guilds | 
                                  GatewayIntents.GuildMessages |
                                  GatewayIntents.GuildMembers |
@@ -24,11 +24,11 @@ namespace Discord_Bot_Dusk
             // Initialize the command handler
             CommandHandler.Initialize(_client);
 
-            // Setup event handlers CORRECTLY
+
             _client.Log += LogAsync;	
             _client.Ready += ReadyAsync;
             
-            // Fix for "GuildAvailable Handler is Blocking the Gateway Task"
+
             _client.GuildAvailable += guild => 
             {
                 // Fire and forget - properly handling exceptions
@@ -49,7 +49,7 @@ namespace Discord_Bot_Dusk
             
             _client.SlashCommandExecuted += CommandHandler.HandleCommand;
 
-            // Get the bot token from environment variables
+
             string token = Environment.GetEnvironmentVariable("BotToken") 
                 ?? throw new InvalidOperationException("Bot token not found in environment variables.");
 
